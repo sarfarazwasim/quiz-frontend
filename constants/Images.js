@@ -1,0 +1,1 @@
+export const CONTEST_DEFAULT_IMAGE=require('../assets/images/placeholder-image.png')
