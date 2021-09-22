@@ -13,28 +13,32 @@ import Subscriptions from '../screens/Subscriptions';
 
 const Tab = createBottomTabNavigator();
 
-const SearchTabButton = ({children, onPress})=>(
-  <TouchableOpacity
-    activeOpacity={0.8}
-    style={styles.searchBtnWrapper}
-    onPress={onPress}
-  >
-    <View
-      style={styles.searchBtn}
-    >
-      {children}
-    </View>
-  </TouchableOpacity>
-)
 
-export default function MainTabNavigation() {
+
+export default function MainTabNavigation({navigation}) {
+
+  const SearchTabButton = ({children, onPress})=>(
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={styles.searchBtnWrapper}
+      onPress={()=>{navigation.navigate('Search')}}
+    >
+      <View
+        style={styles.searchBtn}
+      >
+        {children}
+      </View>
+    </TouchableOpacity>
+  )
+
   return (
     <Tab.Navigator
         screenOptions={{
           header: ()=><LogoHeader />,
           tabBarActiveTintColor: Theme.primary,
           tabBarInactiveTintColor: Theme.inactive,
-          tabBarStyle: styles.tabBarStyle
+          tabBarStyle: styles.tabBarStyle,
+          tabBarHideOnKeyboard: true,
         }}
       >
         <Tab.Screen name="Home"  component={Home} 
@@ -46,7 +50,7 @@ export default function MainTabNavigation() {
             )
           }}
         />
-        <Tab.Screen name="Search" component={Search} 
+        <Tab.Screen name="Search_dummy" component={Search} 
           options={{
             tabBarLabel:()=>null,
             
@@ -81,16 +85,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,
-    borderRadius: 50,
-    overflow: 'hidden'
+    width: 60,
+    height: 60,
+    backgroundColor: Theme.primary,
+    borderRadius: 30,
   },
   searchBtn: {
-    width: 50,
-    height: 50,
-    backgroundColor: Theme.primary
+
   },
   tabBarStyle: {
-    borderRadius: 50,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
     elevation: 5,
     position: 'absolute',
     height: 60,

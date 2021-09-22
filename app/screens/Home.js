@@ -1,12 +1,12 @@
 import { ThemeProvider } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View,  ScrollView } from 'react-native';
+import { StyleSheet, Text, View,  ScrollView, TouchableOpacity } from 'react-native';
 import Contest from '../../components/Contest';
 import HorizontalSlider from '../../components/HorizontalSlider';
 import Theme from '../../styles/Theme';
 
-export default function Home() {
+export default function Home({navigation}) {
   const [categories, setCategories] = useState([])
   const [contests, setContests] = useState({})
 
@@ -215,12 +215,15 @@ export default function Home() {
   
   return (
     <View style={styles.container}>
+      {/* <Text onPress={()=>navigation.navigate('ContestDetails')}>click here</Text> */}
       <ScrollView >
         {categories.map((category, index)=>      
           <HorizontalSlider key={index} heading={category.categoryName}>
             
             {contests[category.categoryName]?.map(({imageUrl, contestName, startDateTime}, index)=>
-                  <Contest key={index} imageUri={imageUrl} contestName={contestName} date={startDateTime} />  
+                <TouchableOpacity key={index} onPress={()=>navigation.navigate('ContestDetails')} activeOpacity={0.9}>
+                  <Contest  imageUri={imageUrl} contestName={contestName} date={startDateTime} />  
+                </TouchableOpacity>  
               )}
             
           </HorizontalSlider>
@@ -228,6 +231,7 @@ export default function Home() {
         
         
       </ScrollView>
+      <StatusBar style="auto" />
     </View>
   );
 }
@@ -236,6 +240,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.bg_level2,
+    paddingBottom: 60
     
   },
 });

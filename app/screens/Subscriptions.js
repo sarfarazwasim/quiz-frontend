@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import Contest from '../../components/Contest';
 import Theme from '../../styles/Theme';
 
-export default function Subscriptions() {
+export default function Subscriptions({navigation}) {
   const [contests, setContests] = useState([])
 
   useEffect(()=>{
@@ -67,11 +67,13 @@ export default function Subscriptions() {
   }, [])
   return (
     <View style={styles.container}>
+      {/* <Text onPress={()=>navigation.navigate('ContestDetails')}>click here</Text> */}
       <ScrollView contentContainerStyle={styles.scrollerContainer}>
         {contests && contests.map(({imageUrl, contestName, startDateTime}, index)=>
           <Contest key={index} imageUri={imageUrl} contestName={contestName} date={startDateTime} />  
         )}
       </ScrollView>
+      <StatusBar style="auto" />
     </View>
   );
 }
@@ -80,7 +82,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    backgroundColor: Theme.bg_level2
+    backgroundColor: Theme.bg_level2,
+    paddingBottom: 60
   },
   scrollerContainer:{
     flexDirection: 'row',
