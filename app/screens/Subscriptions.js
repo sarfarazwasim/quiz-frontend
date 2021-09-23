@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import Contest from '../../components/Contest';
 import Theme from '../../styles/Theme';
 
@@ -70,7 +70,9 @@ export default function Subscriptions({navigation}) {
       {/* <Text onPress={()=>navigation.navigate('ContestDetails')}>click here</Text> */}
       <ScrollView contentContainerStyle={styles.scrollerContainer}>
         {contests && contests.map(({imageUrl, contestName, startDateTime}, index)=>
-          <Contest key={index} imageUri={imageUrl} contestName={contestName} date={startDateTime} />  
+        <TouchableOpacity key={index} onPress={()=>navigation.navigate('ContestDetails')} activeOpacity={0.9}>
+          <Contest imageUri={imageUrl} contestName={contestName} date={startDateTime} />  
+        </TouchableOpacity>
         )}
       </ScrollView>
       <StatusBar style="auto" />

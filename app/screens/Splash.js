@@ -1,20 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { storeStringData } from '../../constants/util';
 import Theme from '../../styles/Theme';
 
 
-export default function ContestDetails({navigation}) {
-  useEffect(()=>{
-    storeStringData('contestId', 'contest2')
-    console.log('setting data')
-  },[])
-
+export default function Splash() {
   return (
     <View style={styles.container}>
-      <Text>Contest Details!</Text>
-      <Text onPress={()=>navigation.navigate('Play')}>Go and play</Text>
+      <Text>Splash screen!</Text>
       <StatusBar style="auto" />
     </View>
   );

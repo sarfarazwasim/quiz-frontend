@@ -1,0 +1,1 @@
+export const HOST = 'http://10.177.68.16:'

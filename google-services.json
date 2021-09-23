@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "927030546947",
+    "firebase_url": "https://quinbay-quiz-default-rtdb.firebaseio.com",
+    "project_id": "quinbay-quiz",
+    "storage_bucket": "quinbay-quiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927030546947:android:1f4ffa363698ff79c7b436",
+        "android_client_info": {
+          "package_name": "com.quinbay.quiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927030546947-mc9keices97609otkl0ttocpr54hdm3v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHBCWVzg3Tj7-r3VqxufnJ7gn6U7pTGMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "927030546947-mc9keices97609otkl0ttocpr54hdm3v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
