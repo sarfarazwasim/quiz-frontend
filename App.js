@@ -17,6 +17,7 @@ import Login from './app/screens/Login';
 import Splash from './app/screens/Splash';
 import StaticQuiz from './app/screens/Staticquiz'
 import DynamicQuiz from './app/screens/Dynamicquiz'
+import Thankyoupage from './app/screens/Thankyoupage'
 
 
 
@@ -61,6 +62,7 @@ export default function App() {
                 <HomeStack.Screen name="Play" component={Play} options={noNav}/>
                 <HomeStack.Screen name="Staticpage" component={StaticQuiz} options={noNav}/>
                 <HomeStack.Screen name="Dynamicpage" component={DynamicQuiz} options={noNav}/>
+                <HomeStack.Screen name="Thankyoupage" component={Thankyoupage} options={noNav}/>
               </>
         }
         
