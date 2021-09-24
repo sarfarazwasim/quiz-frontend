@@ -15,6 +15,8 @@ import Play from './app/screens/Play';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Login from './app/screens/Login';
 import Splash from './app/screens/Splash';
+import StaticQuiz from './app/screens/Staticquiz'
+import DynamicQuiz from './app/screens/Dynamicquiz'
 
 
 
@@ -57,6 +59,8 @@ export default function App() {
                 <HomeStack.Screen name="Search" component={Search} options={{header:()=><LogoHeader/>}}/>
                 <HomeStack.Screen name="ContestDetails" component={ContestDetails} options={{header:()=><LogoHeader/>}}/>
                 <HomeStack.Screen name="Play" component={Play} options={noNav}/>
+                <HomeStack.Screen name="Staticpage" component={StaticQuiz} options={noNav}/>
+                <HomeStack.Screen name="Dynamicpage" component={DynamicQuiz} options={noNav}/>
               </>
         }
         
