@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View,Image, TouchableOpacity, Button, Pressable, ImageBackground } from 'react-native';
 import { storeStringData } from '../../constants/util';
 import Theme from '../../styles/Theme';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ContestDetails({navigation}) {
   useEffect(()=>{
@@ -13,13 +13,27 @@ export default function ContestDetails({navigation}) {
     console.log('setting data')
   },[])
 
-  let [isactive, setActive] = useState(false);
+  let [isactive, setActive] = useState(true);
+  let [quiztype, setstype] = useState("STATIC");
   let [currentquestion, setCurrent] = useState(0);
   let [starttime, setstarttime] = useState("Monday 8 PM");
   let [endtime, setendtime] = useState("Monday 10 PM");
   let [duration, setDuration] = useState("15 Mins");
   let [clickedanswer, setClicked] = useState(-1);
   let answerstyle = {backgroundColor:'gray', color:'white'};
+
+  const join = ()=>{
+    const cid = 'abc123'
+    console.log('Contest Id ', cid)
+    AsyncStorage.setItem('contestId', cid)
+    navigation.navigate('Dynamicpage')
+  }
+
+  const subscribe = ()=>{
+    const cid = 'abc123'
+    console.log('Contest Id ', cid)
+    AsyncStorage.setItem('contestId', cid)
+  }
 
 
   return (
@@ -28,6 +42,8 @@ export default function ContestDetails({navigation}) {
       style={styles.back_image} /> */}
       <View style={styles.middle_body}>
         <View style={styles.inside_body}>
+        <ImageBackground source={require('../../assets/images/placeholder-image.png')}
+                style={styles.back_image} />
           <View>
             {/* <View>
               <ImageBackground source={require('./assets/quiz_back.jpg')}
@@ -43,6 +59,14 @@ export default function ContestDetails({navigation}) {
                 By - Quizz Master </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
              
+              </Text>
+            </View>
+
+            <View style={{marginTop: '3%'}}>
+              <Text style={{fontSize:17}}>
+                Quizz Type : </Text>
+              <Text style={{fontSize:18, fontWeight: 'bold'}}>
+              {quiztype}
               </Text>
             </View>
 
@@ -73,12 +97,12 @@ export default function ContestDetails({navigation}) {
 
             {/* <Button title="Subscribe" style={styles.subs_btn}>
             </Button> */}
-            <Pressable style={styles.subs_btn}>
+            <Pressable style={styles.subs_btn} onPress={()=>join()}>
                 <Text style={{color:'white'}}>SUBSCRIBE</Text>
             </Pressable>
 
             {isactive ? (
-              <Pressable style={styles.join_btn} onPress={()=>navigation.navigate('Play')}>
+              <Pressable style={styles.join_btn} onPress={()=>join()}>
               <Text style={{color:'white'}}>JOIN</Text>
           </Pressable>
             ) : (
@@ -107,10 +131,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   back_image: {
+    // flex: 1,
     width: '100%',
-    height: '100%',
-    // resizeMode: 'cover',
-    position: 'absolute'
+    height: '97.8%',
+    resizeMode: 'contain',
+    position: 'absolute',
+    opacity: 0.13
   },
   middle_body: 
   {
@@ -121,23 +147,21 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.bg_level2,
   },
   inside_body: {
+    
     flex: 1,
     justifyContent:'center',
     flexDirection:'row',
-    marginTop: '10%',
     maxHeight: '90%',
-    padding: '2%',
+    // padding: '2%',
     maxWidth: '90%',
     backgroundColor: 'white',
     borderWidth:2,
     borderColor: '#00b6bd',
-    // backgroundColor: 'linear-gradient(180deg, #01CCCE 0%, rgba(137, 202, 203, 0.97) 100%)',
-    borderRadius: 8,
     paddingVertical: 45,
     // paddingHorizontal: 25,
     // width: '100%',
-    marginVertical: 10,
-    borderRadius: 12,
+    // marginVertical: 10,
+    borderRadius: 3,
     shadowColor: 'black',
     shadowOffset: {width: 22, height: 41},
     shadowOpacity: 1,
