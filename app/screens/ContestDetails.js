@@ -23,7 +23,7 @@ export default function ContestDetails({navigation}) {
   let answerstyle = {backgroundColor:'gray', color:'white'};
 
   const join = ()=>{
-    const cid = 'abc123'
+    const cid = 'contest2'
     console.log('Contest Id ', cid)
     AsyncStorage.setItem('contestId', cid)
     navigation.navigate('Dynamicpage')

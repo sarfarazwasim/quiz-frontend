@@ -5,7 +5,7 @@ import { ImageBackground, StyleSheet, Text, View,Image, TouchableOpacity } from 
 import QuizStartPage from '../../components/startingquizpage'
 import LeaderBoard from '../../components/leaderboard'
 import GeneratingSocreBoard from '../../components/loadingpage'
-import Questions from '../../assets/questionset.json'
+// import Questions from '../../assets/questionset.json'
 import Theme from '../../styles/Theme';
 import firebase from '../../firebase/Firebase';
 import 'firebase/firestore'
@@ -13,7 +13,7 @@ import 'firebase/firestore'
 export default function Play({navigation}) {
   const [ended, setEnded] = useState(false)
   const [waiting, setWaiting] = useState(false)
-  const [question, setQuestion] = useState(true)
+  const [question, setQuestion] = useState(null)
   const [scoreBoard, setScoreBoard] = useState(null)
 
   let [isanswered, setAnswered] = useState(false);
@@ -51,32 +51,32 @@ export default function Play({navigation}) {
   const [zero, setZero] = React.useState('');
   const [quizover, setOver] = React.useState(false);
 
-  React.useEffect(() => {
-    setTimeout(() => 
-    {
-      if(seconds < 11)
-        setZero('0')
-      if(seconds > 0)
-        setSeconds(seconds - 1)
-      if(seconds == 0 && minutes > 0)
-      {
-        setSeconds(59)
-        setMinutes(minutes-1)
-        setZero('')
-      }
-      if(seconds == 0 && minutes == 0)
-      {
-        answerbutton(0)
-      }
-    }, 1000);
+  // React.useEffect(() => {
+  //   setTimeout(() => 
+  //   {
+  //     if(seconds < 11)
+  //       setZero('0')
+  //     if(seconds > 0)
+  //       setSeconds(seconds - 1)
+  //     if(seconds == 0 && minutes > 0)
+  //     {
+  //       setSeconds(59)
+  //       setMinutes(minutes-1)
+  //       setZero('')
+  //     }
+  //     if(seconds == 0 && minutes == 0)
+  //     {
+  //       answerbutton(0)
+  //     }
+  //   }, 1000);
   
-    });
+  //   });
 
 
   const answerbutton = (myanswer) =>
   {
     setIsloading(1)
-    Questions[currentquestion].clicked=myanswer
+    question.clicked=myanswer
     setClicked(myanswer-1)
     if(myanswer === 1)
     {
@@ -113,25 +113,25 @@ export default function Play({navigation}) {
     }
     
     
-    setTimeout(function(){ 
-      if(currentquestion < Questions.length-1)
-    {
-      // alert(currentquestion)
-      setCurrent(currentquestion+1)
+    // setTimeout(function(){ 
+    //   if(currentquestion < Questions.length-1)
+    // {
+    //   // alert(currentquestion)
+    //   setCurrent(currentquestion+1)
 
-      setastyle1({})
-      setastyle2({})
-      setastyle3({})
-      setastyle4({})
-      setIsleader(1)
-      setTimeout(function(){ 
+    //   setastyle1({})
+    //   setastyle2({})
+    //   setastyle3({})
+    //   setastyle4({})
+    //   setIsleader(1)
+    //   setTimeout(function(){ 
      
-        setIsloading(0)
-        setIsleader(0)
+    //     setIsloading(0)
+    //     setIsleader(0)
 
-      }, 3000);
-    }
-    }, 3000);
+    //   }, 3000);
+    // }
+    // }, 3000);
       setCorrect(-1)
       setAnswered(false)
   }
@@ -233,30 +233,14 @@ export default function Play({navigation}) {
             <View style={styles.container}>
       <ImageBackground source={require('../../assets/images/quiz_back.jpg')}
       style={styles.back_image} />
-      {quizover? (
-        <View style={styles.middle_body}>
-        <View style={{backgroundColor:'#e8f1f1f0', width:'100%', height:750, marginTop:'10%',
-      flex: 1, alignItems:'center',justifyContent:'center'}}>
-        <Image source={require('../../assets/images/tick.gif')}
-                style={styles.tick_image} />
-          <Text style={{textAlign:'center',fontSize: 25}}>
-            Thank You For Playing
-          </Text>
-          <Text style={{textAlign:'center',fontSize: 25}}>
-            
-          </Text>
-          <Text style={{textAlign:'center',fontSize: 25}}>
-          </Text>
-        </View>
-        </View>
-      ):(
+      
         <View style={styles.middle_body}>
         <View style={styles.inside_body}>
           <View style={{flex: 1, flexDirection: 'row', 
           justifyContent:'space-between'}}>
               <View>
-                <Text style={{fontSize: 17}}>
-                  Q {currentquestion+1}/{totalquestions}</Text>
+                {/* <Text style={{fontSize: 17}}>
+                  Q {currentquestion+1}/{totalquestions}</Text> */}
               </View>
               <View style={{flex: 1, flexDirection: 'row', 
           justifyContent: 'center',marginBottom:'-15%'}}>
@@ -281,15 +265,15 @@ export default function Play({navigation}) {
                 padding: '1%', minWidth: '90%', maxWidth: '90%', borderRadius:20,
               flex: 1, justifyContent:'center', alignItems: 'center'}}>
                 <Text style={{fontSize: 17, textAlign:'center'}}>
-                  {Questions[currentquestion].questionText}
+                  {question.questionText}
                   </Text>
               </View>
           </View>
 
-          {Questions[currentquestion].mediaFileUrl? (
+          {question.mediaFileUrl? (
             <View style={{flex: 1, flexDirection: 'row', 
             justifyContent:'center', marginBottom: '5%'}}>
-              <Image source={{uri:Questions[currentquestion].mediaFileUrl}} 
+              <Image source={{uri:question.mediaFileUrl}} 
               style={styles.ques_image}/>
             </View>
           ):(
@@ -304,7 +288,7 @@ export default function Play({navigation}) {
               <TouchableOpacity style={{...styles.option_box,...option1}} onPress= {()=>{answerbutton(1)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
-                  {Questions[currentquestion].option1}
+                  {question.option1}
                   </Text>
               </View>
               </TouchableOpacity>
@@ -312,7 +296,7 @@ export default function Play({navigation}) {
               <TouchableOpacity style={{...styles.option_box,...option2}} onPress= {()=>{answerbutton(2)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
-                {Questions[currentquestion].option2}
+                {question.option2}
                   </Text>
               </View>
               </TouchableOpacity>
@@ -328,7 +312,7 @@ export default function Play({navigation}) {
             <TouchableOpacity style={{...styles.option_box,...option3}} onPress= {()=>{answerbutton(3)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
-                {Questions[currentquestion].option3}
+                {question.option3}
 
                   </Text>
               </View>
@@ -337,7 +321,7 @@ export default function Play({navigation}) {
               <TouchableOpacity style={{...styles.option_box,...option4}} onPress= {()=>{answerbutton(4)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
-                {Questions[currentquestion].option4}
+                {question.option4}
 
                   </Text>
               </View>
@@ -362,7 +346,7 @@ export default function Play({navigation}) {
         </View>
           
       </View>
-      )}
+      
     </View>
   
 
