@@ -16,7 +16,7 @@ export default function Play({navigation}) {
   const [question, setQuestion] = useState(null)
   const [scoreBoard, setScoreBoard] = useState(null)
 
-  let [isanswered, setAnswered] = useState(false);
+  let [answerdisabled, setAnsweredisabled] = useState(false);
   let [currentquestion, setCurrent] = useState(0);
   let [correctanswer, setCorrect] = useState(-1);
   let [clickedanswer, setClicked] = useState(-1);
@@ -51,32 +51,11 @@ export default function Play({navigation}) {
   const [zero, setZero] = React.useState('');
   const [quizover, setOver] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   setTimeout(() => 
-  //   {
-  //     if(seconds < 11)
-  //       setZero('0')
-  //     if(seconds > 0)
-  //       setSeconds(seconds - 1)
-  //     if(seconds == 0 && minutes > 0)
-  //     {
-  //       setSeconds(59)
-  //       setMinutes(minutes-1)
-  //       setZero('')
-  //     }
-  //     if(seconds == 0 && minutes == 0)
-  //     {
-  //       answerbutton(0)
-  //     }
-  //   }, 1000);
-  
-  //   });
-
 
   const answerbutton = (myanswer) =>
   {
-    setIsloading(1)
-    question.clicked=myanswer
+    setAnsweredisabled(true)
+    // question.clicked=myanswer
     setClicked(myanswer-1)
     if(myanswer === 1)
     {
@@ -106,39 +85,11 @@ export default function Play({navigation}) {
       setastyle3({})
       setastyle1({})
     }
-    setCorrect(Questions[currentquestion].correctIndex)
-    setAnswered(true)
-    if(clickedanswer===Questions[currentquestion].rightAnswer)
-    {
-    }
-    
-    
-    // setTimeout(function(){ 
-    //   if(currentquestion < Questions.length-1)
-    // {
-    //   // alert(currentquestion)
-    //   setCurrent(currentquestion+1)
-
-    //   setastyle1({})
-    //   setastyle2({})
-    //   setastyle3({})
-    //   setastyle4({})
-    //   setIsleader(1)
-    //   setTimeout(function(){ 
-     
-    //     setIsloading(0)
-    //     setIsleader(0)
-
-    //   }, 3000);
-    // }
-    // }, 3000);
-      setCorrect(-1)
-      setAnswered(false)
   }
 
   const quitbutton = () =>
   {
-    setOver(true)
+    navigation.navigate('Thankyoupage')
   }
 
 
@@ -285,7 +236,8 @@ export default function Play({navigation}) {
           justifyContent: 'center'}}>
           <View style={{flex: 1, flexDirection: 'row', 
           justifyContent: 'space-around', maxWidth:'95%'}}>
-              <TouchableOpacity style={{...styles.option_box,...option1}} onPress= {()=>{answerbutton(1)}}>
+              <TouchableOpacity style={{...styles.option_box,...option1}} 
+              disabled={answerdisabled} onPress= {()=>{answerbutton(1)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
                   {question.option1}
@@ -293,7 +245,8 @@ export default function Play({navigation}) {
               </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={{...styles.option_box,...option2}} onPress= {()=>{answerbutton(2)}}>
+              <TouchableOpacity style={{...styles.option_box,...option2}} 
+              disabled={answerdisabled} onPress= {()=>{answerbutton(2)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
                 {question.option2}
@@ -309,7 +262,8 @@ export default function Play({navigation}) {
           justifyContent: 'center', marginBottom:'5%'}}>
           <View style={{flex: 1, flexDirection: 'row', 
           justifyContent: 'space-around', maxWidth:'95%'}}>
-            <TouchableOpacity style={{...styles.option_box,...option3}} onPress= {()=>{answerbutton(3)}}>
+            <TouchableOpacity style={{...styles.option_box,...option3}} 
+            disabled={answerdisabled} onPress= {()=>{answerbutton(3)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
                 {question.option3}
@@ -318,7 +272,8 @@ export default function Play({navigation}) {
               </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={{...styles.option_box,...option4}} onPress= {()=>{answerbutton(4)}}>
+              <TouchableOpacity style={{...styles.option_box,...option4}} 
+              disabled={answerdisabled} onPress= {()=>{answerbutton(4)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
                 {question.option4}
