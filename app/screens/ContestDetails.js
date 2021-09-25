@@ -4,6 +4,8 @@ import { StyleSheet, Text, View,Image, TouchableOpacity, Button, Pressable, Imag
 import { storeStringData } from '../../constants/util';
 import Theme from '../../styles/Theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HOST } from '../../constants/hostConfig';
+
 
 export default function ContestDetails({navigation}) {
   useEffect(()=>{
@@ -48,10 +50,29 @@ export default function ContestDetails({navigation}) {
       navigation.navigate('Staticpage')
   }
 
-  const subscribe = ()=>{
-    const cid = 'contest2'
-    console.log('Contest Id ', cid)
-    // AsyncStorage.setItem('contestId', cid)
+  const subscribe = async ()=>{
+    console.log('hi')
+    myemail=await AsyncStorage.getItem('emailId')
+    console.log('hello', myemail)
+    fetch(`${HOST}5000/subscription/${data.contestId}?emailId=${myemail}`,
+    {
+
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res=>{
+        console.log(res, 'hid')
+        return res
+      })
+      .then(data=>{
+         console.log('subscription',data);
+          // alert('subscribe')
+        // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+      })
+      .catch(err=>console.log(err, 'subscription error'))
+
   }
 
   if(data)
