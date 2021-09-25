@@ -3,9 +3,11 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
 import { StyleSheet, Text, View,Image, TouchableOpacity, Button, Pressable, ImageBackground, TextInput } from 'react-native';
 import Theme from '../../styles/Theme';
+import 'firebase/firestore'
+import { CIHOST } from '../../constants/ciConfig';
 
 
-export default function Login() {
+export default function Login({navigation}) {
 
 let [email, setEmail] = useState('');
 let [password, setPassword] = useState('');
@@ -14,7 +16,35 @@ let [password, setPassword] = useState('');
   const setToken = ()=>{
     console.log('Email: ', email,' pasword: ',password)
     // console.log('setting email id')
-    AsyncStorage.setItem('emailId', email)
+
+    fetch(`${CIHOST}auth/loginWithError`,
+    {
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          emailId: email,
+          password: password
+        })
+      })
+      .then(res=>res.json())
+      .then(data=>{
+         console.log('login',data);
+         if(data.role === 'Private')
+         {
+          //  navigation.navigate('Home')
+          alert('Login Successful')
+          AsyncStorage.setItem('emailId', email)
+         }
+         else
+         alert('Only Players Can Login Here')
+
+        
+      })
+      .catch(err=>{console.log(err, 'login error')
+    alert('Invalid Credentials')})
+
   }
   return (
     <View style={styles.container}>

@@ -52,7 +52,7 @@ export default function Play({navigation}) {
   const [quizover, setOver] = React.useState(false);
 
 
-  const answerbutton = (myanswer) =>
+  const answerbutton = (myanswer,qid) =>
   {
     setAnsweredisabled(true)
     // question.clicked=myanswer
@@ -85,6 +85,31 @@ export default function Play({navigation}) {
       setastyle3({})
       setastyle1({})
     }
+
+
+    const myemail=AsyncStorage.getItem('emailId')
+    const mycontest=AsyncStorage.getItem('contestId')
+    // fetch(`${HOST}5000/contestQuestion/all/f3057d8a-3939-4710-8ccd-da9c410d0d5f`,{
+    fetch(`${HOST}4000/answer?emailId=${myemail}`,
+    {
+
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userId: myemail,
+            contestId: mycontest,
+            questionId: qid,
+            answer: JSON.stringify(myanswer)
+        })
+      })
+      .then(res=>res.json())
+      .then(data=>{
+         console.log('staticquiz',data);
+        // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+      })
+      .catch(err=>console.log(err, 'answer error'))
   }
 
   const quitbutton = () =>
@@ -225,7 +250,7 @@ export default function Play({navigation}) {
               <Image source={{uri:question.mediaFileUrl}} 
               style={styles.ques_image}/>
             </View>
-          ):(
+          ):( 
             <View></View>
           )}
           
@@ -235,7 +260,7 @@ export default function Play({navigation}) {
           <View style={{flex: 1, flexDirection: 'row', 
           justifyContent: 'space-around', maxWidth:'95%'}}>
               <TouchableOpacity style={{...styles.option_box,...option1}} 
-              disabled={answerdisabled} onPress= {()=>{answerbutton(1)}}>
+              disabled={answerdisabled} onPress= {()=>{answerbutton(1,question.questionId)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
                   {question.option1}
@@ -244,7 +269,7 @@ export default function Play({navigation}) {
               </TouchableOpacity>
 
               <TouchableOpacity style={{...styles.option_box,...option2}} 
-              disabled={answerdisabled} onPress= {()=>{answerbutton(2)}}>
+              disabled={answerdisabled} onPress= {()=>{answerbutton(2,question.questionId)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
                 {question.option2}
@@ -261,7 +286,7 @@ export default function Play({navigation}) {
           <View style={{flex: 1, flexDirection: 'row', 
           justifyContent: 'space-around', maxWidth:'95%'}}>
             <TouchableOpacity style={{...styles.option_box,...option3}} 
-            disabled={answerdisabled} onPress= {()=>{answerbutton(3)}}>
+            disabled={answerdisabled} onPress= {()=>{answerbutton(3,question.questionId)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
                 {question.option3}
@@ -271,7 +296,7 @@ export default function Play({navigation}) {
               </TouchableOpacity>
 
               <TouchableOpacity style={{...styles.option_box,...option4}} 
-              disabled={answerdisabled} onPress= {()=>{answerbutton(4)}}>
+              disabled={answerdisabled} onPress= {()=>{answerbutton(4,question.questionId)}}>
               <View >
                 <Text style={{fontSize: 17, textAlign:'center'}}>
                 {question.option4}
