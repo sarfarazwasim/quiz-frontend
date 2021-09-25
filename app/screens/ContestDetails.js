@@ -7,15 +7,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ContestDetails({navigation}) {
   useEffect(()=>{
-    console.log('Async contest')
-    console.log(AsyncStorage.getItem('selectedContest'))
+    // console.log('Async contest')
+    // console.log(AsyncStorage.getItem('selectedContest'))
     AsyncStorage.getItem('selectedContest')
     .then(data=>{
       data=JSON.parse(data);
-      console.log(data)
+      if(data.durationTime)
+      {
+      const myArr = (data.durationTime).split(":")
+      var a = parseInt(myArr[0])*60 + parseInt(myArr[1])
+      console.log(myArr)
+      console.log('mins',a)
+      AsyncStorage.setItem('contestduration', JSON.stringify(a))
+
+      }
       setData(data)
     })
-    setData(AsyncStorage.getItem('selectedContest'))
+    // setData(AsyncStorage.getItem('selectedContest'))
     storeStringData('contestId', 'contest2')
     // console.log('contest', mydata)
   },[])
@@ -33,7 +41,10 @@ export default function ContestDetails({navigation}) {
     const cid = 'contest2'
     console.log('Contest Id ', cid)
     AsyncStorage.setItem('contestId', cid)
-    navigation.navigate('Dynamicpage')
+    if(data.contestType === "DYNAMIC")
+      navigation.navigate('Dynamicpage')
+    else if(data.contestType === "STATIC")
+      navigation.navigate('Staticpage')
   }
 
   const subscribe = ()=>{
