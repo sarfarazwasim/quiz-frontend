@@ -247,7 +247,7 @@ export default function Home({navigation}) {
 
 
     setCategories(categories_data)
-    for(i=0; i<categories_data.length; i++)
+    for(let i=0; i<categories_data.length; i++)
       getContest(i)
     
   }, [])
@@ -257,6 +257,13 @@ export default function Home({navigation}) {
     console.log('deleting email id')
     AsyncStorage.removeItem('emailId')
   }
+
+  const selectContest = (mycontest)=>{
+    console.log('select contest func')
+    AsyncStorage.setItem('selectedContest',JSON.stringify(mycontest))
+    .catch(err=>console.log(err))
+    navigation.navigate('ContestDetails')
+  }
   
   return (
     <View style={styles.container}>
@@ -265,9 +272,11 @@ export default function Home({navigation}) {
       <ScrollView >
         {categories.map((category, index)=>      
           <HorizontalSlider key={index} heading={category.categoryName}>
-            
             {contests[category.categoryName]?.map(({imageUrl, contestName, startDateTime}, index)=>
-                <TouchableOpacity key={index} onPress={()=>navigation.navigate('ContestDetails')} activeOpacity={0.9}>
+                <TouchableOpacity key={index} onPress={()=>{
+                  selectContest(contests[category.categoryName][index]); 
+                  console.log('mycat',contests[category.categoryName][index])
+                  }} activeOpacity={0.9}>
                   <Contest  imageUri={imageUrl} contestName={contestName} date={toDayMonthYear(new Date(startDateTime))} />  
                 </TouchableOpacity>  
               )}
