@@ -7,6 +7,7 @@ import Contest from '../../components/Contest';
 import HorizontalSlider from '../../components/HorizontalSlider';
 import { HOST } from '../../constants/hostConfig';
 import { toDayMonthYear } from '../../constants/util';
+import { useAuth } from '../../context/authContext';
 import Theme from '../../styles/Theme';
 
 // const toDayMonthYear =()=>{
@@ -19,6 +20,7 @@ import Theme from '../../styles/Theme';
 export default function Home({navigation}) {
   const [categories, setCategories] = useState([])
   const [contests, setContests] = useState({})
+  const Auth = useAuth()
 
   useEffect(()=>{
     const categories_data = [
@@ -267,7 +269,8 @@ export default function Home({navigation}) {
   
   return (
     <View style={styles.container}>
-      <Text onPress={deleteToken}>set Token</Text>
+      {/* <Text onPress={deleteToken}>unset Token</Text> */}
+      <Text onPress={()=>{console.log(Auth.logout())}}>Logout</Text>
       {/* <Text onPress={()=>navigation.navigate('ContestDetails')}>click here</Text> */}
       <ScrollView >
         {categories.map((category, index)=>      
