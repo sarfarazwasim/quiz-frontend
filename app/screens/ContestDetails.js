@@ -7,15 +7,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ContestDetails({navigation}) {
   useEffect(()=>{
-    <Text >Go and play</Text>
-
+    console.log('Async contest')
+    console.log(AsyncStorage.getItem('selectedContest'))
+    AsyncStorage.getItem('selectedContest')
+    .then(data=>{
+      data=JSON.parse(data);
+      console.log(data)
+      setData(data)
+    })
+    setData(AsyncStorage.getItem('selectedContest'))
     storeStringData('contestId', 'contest2')
-    console.log('setting data')
+    // console.log('contest', mydata)
   },[])
 
   let [isactive, setActive] = useState(true);
   let [quiztype, setstype] = useState("STATIC");
-  let [currentquestion, setCurrent] = useState(0);
+  let [data, setData] = useState(null);
   let [starttime, setstarttime] = useState("Monday 8 PM");
   let [endtime, setendtime] = useState("Monday 10 PM");
   let [duration, setDuration] = useState("15 Mins");
@@ -30,28 +37,24 @@ export default function ContestDetails({navigation}) {
   }
 
   const subscribe = ()=>{
-    const cid = 'abc123'
+    const cid = 'contest2'
     console.log('Contest Id ', cid)
     AsyncStorage.setItem('contestId', cid)
   }
 
-
+  if(data)
+  {
   return (
     <View style={styles.container}>
-      {/* <ImageBackground source={require('./assets/quiz_back.jpg')}
-      style={styles.back_image} /> */}
       <View style={styles.middle_body}>
         <View style={styles.inside_body}>
         <ImageBackground source={require('../../assets/images/placeholder-image.png')}
                 style={styles.back_image} />
-          <View>
-            {/* <View>
-              <ImageBackground source={require('./assets/quiz_back.jpg')}
-                style={styles.back_image} />
-            </View> */}
+          <View style={{marginHorizontal: 20, minWidth: '75%'}}>
             <View>
-              <Text style={{fontSize:30, fontWeight: 'bold'}}>
-                Hindi Movies Quizzz</Text>
+              <Text numberOfLines={2} style={{fontSize:30, fontWeight: 'bold'
+              ,textAlign:'center', textTransform:'uppercase',marginTop: 30}}>
+                {data.contestName}</Text>
             </View>
 
             <View style={{marginTop: '3%', textAlign:'right'}}>
@@ -66,7 +69,7 @@ export default function ContestDetails({navigation}) {
               <Text style={{fontSize:17}}>
                 Quizz Type : </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
-              {quiztype}
+              {data.contestType}
               </Text>
             </View>
 
@@ -74,7 +77,7 @@ export default function ContestDetails({navigation}) {
               <Text style={{fontSize:17}}>
                 Starts At : </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
-              {starttime}
+              {(new Date(data.startDateTime).toString()).substr(0,25)}
               </Text>
             </View>
 
@@ -83,7 +86,7 @@ export default function ContestDetails({navigation}) {
               <Text style={{fontSize:17}}>
                 Closes At : </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
-              {endtime}
+              {(new Date(data.endDateTime).toString()).substr(0,25)}
               </Text>
             </View>
 
@@ -91,13 +94,13 @@ export default function ContestDetails({navigation}) {
               <Text style={{fontSize:17}}>
                 Duration: </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
-              {duration}
+              {data.durationTime} Mins
               </Text>
             </View>
 
             {/* <Button title="Subscribe" style={styles.subs_btn}>
             </Button> */}
-            <Pressable style={styles.subs_btn} onPress={()=>join()}>
+            <Pressable style={styles.subs_btn} onPress={()=>subscribe()}>
                 <Text style={{color:'white'}}>SUBSCRIBE</Text>
             </Pressable>
 
@@ -112,7 +115,9 @@ export default function ContestDetails({navigation}) {
             )}
             {/* <Button title="Join" >
             </Button> */}
+            <View style={{marginTop: 40}}>
 
+            </View>
 
           </View>
         </View>
@@ -121,6 +126,11 @@ export default function ContestDetails({navigation}) {
       <StatusBar style="auto" />
     </View>
   );
+          }
+          else
+          {
+            return(<View></View>)
+          }
 }
 
 const styles = StyleSheet.create({
@@ -133,7 +143,7 @@ const styles = StyleSheet.create({
   back_image: {
     // flex: 1,
     width: '100%',
-    height: '97.8%',
+    height: '92%',
     resizeMode: 'contain',
     position: 'absolute',
     opacity: 0.13
@@ -152,12 +162,13 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     flexDirection:'row',
     maxHeight: '90%',
+    minHeight: '76%',
     // padding: '2%',
     maxWidth: '90%',
     backgroundColor: 'white',
     borderWidth:2,
     borderColor: '#00b6bd',
-    paddingVertical: 45,
+    // paddingVertical: 45,
     // paddingHorizontal: 25,
     // width: '100%',
     // marginVertical: 10,
@@ -167,6 +178,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 3,
     elevation: 10,
+    zIndex: 2
   },
   makecenter: {
     flex: 1,
