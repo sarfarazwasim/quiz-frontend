@@ -22,9 +22,10 @@ export default function ContestDetails({navigation}) {
 
       }
       setData(data)
+      storeStringData('contestId', data.contestId)
     })
     // setData(AsyncStorage.getItem('selectedContest'))
-    storeStringData('contestId', 'contest2')
+    // storeStringData('contestId', 'contest2')
     // console.log('contest', mydata)
   },[])
 
@@ -40,7 +41,7 @@ export default function ContestDetails({navigation}) {
   const join = ()=>{
     const cid = 'contest2'
     console.log('Contest Id ', cid)
-    AsyncStorage.setItem('contestId', cid)
+    // AsyncStorage.setItem('contestId', cid)
     if(data.contestType === "DYNAMIC")
       navigation.navigate('Dynamicpage')
     else if(data.contestType === "STATIC")
@@ -50,7 +51,7 @@ export default function ContestDetails({navigation}) {
   const subscribe = ()=>{
     const cid = 'contest2'
     console.log('Contest Id ', cid)
-    AsyncStorage.setItem('contestId', cid)
+    // AsyncStorage.setItem('contestId', cid)
   }
 
   if(data)
