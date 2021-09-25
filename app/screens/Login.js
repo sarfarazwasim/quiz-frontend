@@ -5,13 +5,14 @@ import { StyleSheet, Text, View,Image, TouchableOpacity, Button, Pressable, Imag
 import Theme from '../../styles/Theme';
 import 'firebase/firestore'
 import { CIHOST } from '../../constants/ciConfig';
+import { useAuth } from '../../context/authContext';
 
 
 export default function Login({navigation}) {
 
 let [email, setEmail] = useState('');
 let [password, setPassword] = useState('');
-
+const Auth = useAuth()
 
   const setToken = ()=>{
     console.log('Email: ', email,' pasword: ',password)
@@ -34,8 +35,9 @@ let [password, setPassword] = useState('');
          if(data.role === 'Private')
          {
           //  navigation.navigate('Home')
-          alert('Login Successful')
-          AsyncStorage.setItem('emailId', email)
+          // alert('Login Successful')
+          Auth.login(email)
+          // AsyncStorage.setItem('emailId', email)
          }
          else
          alert('Only Players Can Login Here')

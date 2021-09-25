@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar} from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Image} from 'react-native';
 import Theme from '../styles/Theme';
 
 
 export default function LogoHeader() {
   return (
     <View style={styles.header}>
-      <Text style={styles.headerText}>Quizzz</Text>
+      <Image source={require('../assets/quizlogo.png')}
+                style={styles.back_image} />
     </View>)
 }
 
@@ -28,5 +29,13 @@ const styles = StyleSheet.create({
     color: Theme.primary,
     fontWeight: 'bold',
     fontSize: 22
+  },
+  back_image: {
+    width: 100,
+    height: 35,
+    resizeMode: 'cover',
+    marginLeft: -10,
+    // position: 'absolute',
+    opacity:1,
   }
 });
