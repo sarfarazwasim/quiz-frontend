@@ -5,16 +5,17 @@ import { ImageBackground, StyleSheet, Text, View,Image, TouchableOpacity } from 
 import QuizStartPage from '../../components/startingquizpage'
 import LeaderBoard from '../../components/leaderboard'
 import GeneratingSocreBoard from '../../components/loadingpage'
-import Questions from '../../assets/questionset.json'
+// import Questions from '../../assets/questionset.json'
 import Theme from '../../styles/Theme';
 import firebase from '../../firebase/Firebase';
+import { HOST } from '../../constants/hostConfig';
 import 'firebase/firestore'
 
 
 export default function Play({navigation}) {
   const [ended, setEnded] = useState(false)
   const [waiting, setWaiting] = useState(false)
-  const [question, setQuestion] = useState(true)
+  const [question, setQuestion] = useState(false)
   const [scoreBoard, setScoreBoard] = useState(null)
 
   let [isanswered, setAnswered] = useState(false);
@@ -28,6 +29,10 @@ export default function Play({navigation}) {
   let [option4, setastyle4] = useState({});
   let [totalcorrect, setTotal] = useState(0);
   let [skipcount, setSkipcount] = useState(0);
+  let [Questions, setStaticquestions] = useState([]);
+  let [quizlength, setQuizlength] = useState(0);
+
+
   let myquestion = {
     "questionId": "6a107f93-ea61-44f9-ab5f-74992272ceac",
     "questionText": "vivek",
@@ -44,11 +49,57 @@ export default function Play({navigation}) {
 }
 
   let totalquestions = 7
-  const [seconds, setSeconds] = React.useState(0);
-  const [minutes, setMinutes] = React.useState(7);
+  const [seconds, setSeconds] = React.useState(null);
+  const [minutes, setMinutes] = React.useState(null);
   const [zero, setZero] = React.useState('');
   const [quizover, setOver] = React.useState(false);
 
+  useEffect(()=> {
+      setQuestion(false)
+      
+        // (AsyncStorage.getItem('contestduration'))
+        AsyncStorage.getItem('contestduration')
+        .then(data=>{
+            console.log('time',typeof JSON.parse(data))
+            setMinutes(JSON.parse(data))
+            setSeconds(0)
+        })
+        const myemail = "sarfaraz@gmail.com"
+        // http://localhost:
+        // fetch(`${HOST}5000/contestQuestion/all/${categories_data[index].categoryName}/5/1`,{
+        fetch(`${HOST}5000/contest/join/33383668-dbce-4c4e-bba2-73a1c465bda5?emailId=${myemail}`,{
+            method: 'POST',
+            headers:{
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(res1=>console.log(res1))
+          .then(data1=>{
+             console.log('joinquiz',data1);
+
+             fetch(`${HOST}5000/contestQuestion/all/33383668-dbce-4c4e-bba2-73a1c465bda5`,{
+                method: 'GET',
+                headers:{
+                  'Content-Type': 'application/json'
+                }
+              })
+              .then(res=>res.json())
+              .then(data=>{
+                 console.log('staticquiz',data);
+                 setStaticquestions(data)
+                 setQuizlength(data.length)
+                 setTimeout(() => 
+                { 
+                   setQuestion(true)
+                }, 1000);
+
+                // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+              })
+              .catch(err=>console.log(err, 'static error'))
+            // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+          })
+          .catch(err=>console.log(err, 'join error'))
+  },[])
 
   React.useEffect(() => {
       setTimeout(() => 
@@ -71,16 +122,19 @@ export default function Play({navigation}) {
     
   });
 
-  const answerbutton = (myanswer) =>
+  const answerbutton = (myanswer,qid) =>
   {
-    Questions[currentquestion].clicked=myanswer
+    Questions[currentquestion].preAnswer=myanswer
     if(Questions[currentquestion].isskipped===true)
     {
       setSkipcount(skipcount-1)
+      Questions[currentquestion].isskipped=false
     }
+    let answertext= ''
     setClicked(myanswer-1)
     if(myanswer === 1)
     {
+        answertext= 'option1'
       setastyle1(answerstyle)
       setastyle2({})
       setastyle3({})
@@ -88,6 +142,7 @@ export default function Play({navigation}) {
     }
     else if(myanswer === 2)
     {
+        answertext= 'option2'
       setastyle2(answerstyle)
       setastyle1({})
       setastyle3({})
@@ -95,6 +150,7 @@ export default function Play({navigation}) {
     }
     else if(myanswer === 3)
     {
+        answertext= 'option3'
       setastyle3(answerstyle)
       setastyle2({})
       setastyle1({})
@@ -102,11 +158,36 @@ export default function Play({navigation}) {
     }
     else if(myanswer === 4)
     {
+        answertext= 'option4'
       setastyle4(answerstyle)
       setastyle2({})
       setastyle3({})
       setastyle1({})
     }
+    const myemail="sarfaraz@gmail.com"
+    // fetch(`${HOST}5000/contestQuestion/all/f3057d8a-3939-4710-8ccd-da9c410d0d5f`,{
+    fetch(`${HOST}4000/answer?emailId=${myemail}`,
+    {
+
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userId: "",
+            contestId: "33383668-dbce-4c4e-bba2-73a1c465bda5",
+            questionId: qid,
+            answer: JSON.stringify(myanswer)
+        })
+      })
+      .then(res=>res.json())
+      .then(data=>{
+         console.log('staticquiz',data);
+        // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+      })
+      .catch(err=>console.log(err, 'answer error'))
+
+
     setCorrect(Questions[currentquestion].correctIndex)
     setAnswered(true)
   }
@@ -118,36 +199,36 @@ export default function Play({navigation}) {
     if(clickedanswer===Questions[currentquestion].rightAnswer)
     {
     }
-    if(currentquestion <= Questions.length)
+    if(currentquestion < quizlength)
     {
       setCurrent(currentquestion+1)
 
     }
     
-    if(Questions[currentquestion+1].clicked)
+    if(Questions[currentquestion+1].preAnswer)
     {
-        if(Questions[currentquestion+1].clicked === 1)
+        if(Questions[currentquestion+1].preAnswer === 1)
         {
           setastyle1(answerstyle)
           setastyle2({})
           setastyle3({})
           setastyle4({})
         }
-        else if(Questions[currentquestion+1].clicked === 2)
+        else if(Questions[currentquestion+1].preAnswer === 2)
         {
           setastyle2(answerstyle)
           setastyle1({})
           setastyle3({})
           setastyle4({})
         }
-        else if(Questions[currentquestion+1].clicked === 3)
+        else if(Questions[currentquestion+1].preAnswer === 3)
         {
           setastyle3(answerstyle)
           setastyle2({})
           setastyle1({})
           setastyle4({})
         }
-        else if(Questions[currentquestion+1].clicked === 4)
+        else if(Questions[currentquestion+1].preAnswer === 4)
         {
           setastyle4(answerstyle)
           setastyle2({})
@@ -175,31 +256,31 @@ export default function Play({navigation}) {
       // alert(currentquestion)
     }
     
-    if(Questions[currentquestion-1].clicked)
+    if(Questions[currentquestion-1].preAnswer)
     {
       setAnswered(true)  
-      if(Questions[currentquestion-1].clicked === 1)
+      if(Questions[currentquestion-1].preAnswer === 1)
         {
           setastyle1(answerstyle)
           setastyle2({})
           setastyle3({})
           setastyle4({})
         }
-        else if(Questions[currentquestion-1].clicked === 2)
+        else if(Questions[currentquestion-1].preAnswer === 2)
         {
           setastyle2(answerstyle)
           setastyle1({})
           setastyle3({})
           setastyle4({})
         }
-        else if(Questions[currentquestion-1].clicked === 3)
+        else if(Questions[currentquestion-1].preAnswer === 3)
         {
           setastyle3(answerstyle)
           setastyle2({})
           setastyle1({})
           setastyle4({})
         }
-        else if(Questions[currentquestion-1].clicked === 4)
+        else if(Questions[currentquestion-1].preAnswer === 4)
         {
           setastyle4(answerstyle)
           setastyle2({})
@@ -222,7 +303,28 @@ export default function Play({navigation}) {
   const skipbutton = () =>
   {
     Questions[currentquestion].isskipped=true
-    Questions[currentquestion].clicked=null
+    Questions[currentquestion].preAnswer=null
+    const cid = "33383668-dbce-4c4e-bba2-73a1c465bda5"
+    const myemail="sarfaraz@gmail.com"
+    if(skipcount < 1)
+    {
+    // fetch(`${HOST}5000/contestQuestion/all/f3057d8a-3939-4710-8ccd-da9c410d0d5f`,{
+    fetch(`${HOST}5000/contest/skipped/${cid}?emailId=${myemail}`,
+    {
+
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res=>res)
+      .then(data=>{
+         console.log('skip staticquiz',data);
+        // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+      })
+      .catch(err=>console.log(err, 'skip error'))
+
+    }
     setSkipcount(skipcount+1)
 
     setCurrent(currentquestion+1)
@@ -247,16 +349,19 @@ export default function Play({navigation}) {
 
 
   }
+  
   const quitbutton = () =>
   {
-    setOver(true)
-
-
+    navigation.navigate('Thankyoupage')
   }
+
   useEffect(()=>{
     let questionSubscriber=()=>{}
     let contestStatusSubscriber=()=>{}
     let scoreBoardSubscriber=()=>{}
+
+
+    
     
     const getData = async ()=>{
       let contestId = await AsyncStorage.getItem('contestId')
@@ -328,6 +433,7 @@ export default function Play({navigation}) {
   }, [ended])
 
 
+  if(Questions[0]){
 
   return (
     <View style={styles.container}>
@@ -344,30 +450,13 @@ export default function Play({navigation}) {
             <View style={styles.container}>
             <ImageBackground source={require('../../assets/images/quiz_back.jpg')}
             style={styles.back_image} />
-            {quizover? (
-              <View style={styles.middle_body}>
-              <View style={{backgroundColor:'#e8f1f1f0', width:'100%', height:750, marginTop:'10%',
-            flex: 1, alignItems:'center',justifyContent:'center'}}>
-              <Image source={require('../../assets/images/tick.gif')}
-                      style={styles.tick_image} />
-                <Text style={{textAlign:'center',fontSize: 25}}>
-                  Thank You For Playing
-                </Text>
-                <Text style={{textAlign:'center',fontSize: 25}}>
-                  
-                </Text>
-                <Text style={{textAlign:'center',fontSize: 25}}>
-                </Text>
-              </View>
-              </View>
-            ):(
                     <View style={styles.middle_body}>
                     <View style={styles.inside_body}>
                       <View style={{flex: 1, flexDirection: 'row', 
                       justifyContent:'space-between'}}>
                           <View>
                             <Text style={{fontSize: 17}}>
-                              Q {currentquestion+1}/{totalquestions}</Text>
+                              Q {currentquestion+1}/{quizlength}</Text>
                           </View>
                           <View style={{flex: 1, flexDirection: 'row', 
                       justifyContent: 'center',marginBottom:'-15%'}}>
@@ -424,7 +513,8 @@ export default function Play({navigation}) {
                       justifyContent: 'center'}}>
                       <View style={{flex: 1, flexDirection: 'row', 
                       justifyContent: 'space-around', maxWidth:'95%'}}>
-                          <TouchableOpacity style={{...styles.option_box,...option1}} onPress= {()=>{answerbutton(1)}}>
+                          <TouchableOpacity style={{...styles.option_box,...option1}} 
+                          onPress= {()=>{answerbutton(1,Questions[currentquestion].questionId)}}>
                           <View >
                             <Text style={{fontSize: 17, textAlign:'center'}}>
                               {Questions[currentquestion].option1}
@@ -432,7 +522,8 @@ export default function Play({navigation}) {
                           </View>
                           </TouchableOpacity>
             
-                          <TouchableOpacity style={{...styles.option_box,...option2}} onPress= {()=>{answerbutton(2)}}>
+                          <TouchableOpacity style={{...styles.option_box,...option2}} 
+                          onPress= {()=>{answerbutton(2,Questions[currentquestion].questionId)}}>
                           <View >
                             <Text style={{fontSize: 17, textAlign:'center'}}>
                             {Questions[currentquestion].option2}
@@ -448,7 +539,8 @@ export default function Play({navigation}) {
                       justifyContent: 'center', marginBottom:'5%'}}>
                       <View style={{flex: 1, flexDirection: 'row', 
                       justifyContent: 'space-around', maxWidth:'95%'}}>
-                        <TouchableOpacity style={{...styles.option_box,...option3}} onPress= {()=>{answerbutton(3)}}>
+                        <TouchableOpacity style={{...styles.option_box,...option3}} 
+                        onPress= {()=>{answerbutton(3,Questions[currentquestion].questionId)}}>
                           <View >
                             <Text style={{fontSize: 17, textAlign:'center'}}>
                             {Questions[currentquestion].option3}
@@ -457,7 +549,8 @@ export default function Play({navigation}) {
                           </View>
                           </TouchableOpacity>
             
-                          <TouchableOpacity style={{...styles.option_box,...option4}} onPress= {()=>{answerbutton(4)}}>
+                          <TouchableOpacity style={{...styles.option_box,...option4}} 
+                          onPress= {()=>{answerbutton(4,Questions[currentquestion].questionId)}}>
                           <View >
                             <Text style={{fontSize: 17, textAlign:'center'}}>
                             {Questions[currentquestion].option4}
@@ -483,7 +576,7 @@ export default function Play({navigation}) {
                           ):(
                             <View></View>
                           )}
-                          {currentquestion!=totalquestions-1? (
+                          {currentquestion!=quizlength-1? (
                             <View>
                               {isanswered? (
                           <TouchableOpacity  style={styles.button_next} onPress= {()=>{nextbutton()}}>
@@ -509,7 +602,7 @@ export default function Play({navigation}) {
                             </View>
                           ):(
                             <View>
-                              {skipcount<1 && Questions[currentquestion].clicked ? (
+                              {skipcount<1 && Questions[currentquestion].preAnswer ? (
                                 <TouchableOpacity  style={styles.button_next} onPress= {()=>{quitbutton()}}>
                                 <View >
                                   <Text style={{fontSize: 17, textAlign:'center', color:'white'}}>Submit</Text>
@@ -537,9 +630,6 @@ export default function Play({navigation}) {
                     </View>
                       
                   </View>
-            )
-      
-            }
             <StatusBar style="auto" />
           </View>
         
@@ -550,6 +640,11 @@ export default function Play({navigation}) {
       <StatusBar style="auto" />
     </View>
   );
+    }
+    else
+    {
+        return(<View></View> )
+    }
 }
 
 const styles = StyleSheet.create({

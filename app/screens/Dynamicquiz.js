@@ -106,8 +106,6 @@ export default function Play({navigation}) {
       console.log(contestId)
 
 
-      //TODO subscription code for firestore
-
       questionSubscriber = firebase.firestore()
       .collection('question')
       .doc(contestId)
