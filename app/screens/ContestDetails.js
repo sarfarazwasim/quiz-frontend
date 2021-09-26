@@ -81,7 +81,7 @@ export default function ContestDetails({navigation}) {
     <View style={styles.container}>
       <View style={styles.middle_body}>
         <View style={styles.inside_body}>
-        <ImageBackground source={require('../../assets/images/placeholder-image.png')}
+        <ImageBackground source={require('../../assets/images/stack_image.png')}
                 style={styles.back_image} />
           <View style={{marginHorizontal: 20, minWidth: '75%'}}>
             <View>
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     height: '92%',
     resizeMode: 'contain',
     position: 'absolute',
-    opacity: 0.13
+    opacity: 0.2
   },
   middle_body: 
   {
