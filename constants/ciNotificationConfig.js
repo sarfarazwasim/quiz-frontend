@@ -1,0 +1,1 @@
+export const CINOTIFICATION = 'http://10.177.68.23:'

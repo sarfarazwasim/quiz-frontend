@@ -232,7 +232,7 @@ export default function Home({navigation}) {
     const getContest = async (index)=>{
       // console.log(categories_data[index])
       if(categories_data && categories_data[index])
-        fetch(`${HOST}3000/contestSearch/category/${categories_data[index].categoryName}/5/1`,{
+        fetch(`${HOST}3000/contestSearch/category/${categories_data[index].categoryName}/20/1`,{
           method: 'POST',
           headers:{
             'Content-Type': 'application/json'
