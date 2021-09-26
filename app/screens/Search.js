@@ -26,7 +26,7 @@ export default function Search({navigation}) {
   const handleSearchTextChange = (text)=>{
     setSearchText(text)
 
-    fetch(`${HOST}3000/contestSearch/wc?contestName=${text}`,{
+    fetch(`${HOST}3000/contestSearch/wc?contestName=${text.toLowerCase()}`,{
           method: 'POST',
           headers:{
             'Content-Type': 'application/json'

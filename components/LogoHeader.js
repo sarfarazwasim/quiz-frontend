@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 
-import { StyleSheet, Text, View, StatusBar, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TouchableOpacity, Image} from 'react-native';
 
 import Theme from '../styles/Theme';
 
@@ -13,16 +13,16 @@ export default function LogoHeader() {
   return (
     <View style={styles.header}>
 
-      <Text style={styles.headerText}>Quizzz</Text>
+      
+
+      <Image source={require('../assets/quizlogo3.png')}
+                style={styles.back_image} />
+
       <TouchableOpacity onPress={()=>navigation.navigate('Notification')}>
         <View style={styles.notificationWrapper} >
           <Ionicons name="notifications" size={24} color={Theme.textSecondary} />
         </View>
       </TouchableOpacity>
-
-      {/*  <Image source={require('../assets/quizlogo.png')}
-                style={styles.back_image} /> */}
-
     </View>)
 }
 

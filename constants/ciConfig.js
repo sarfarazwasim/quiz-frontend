@@ -1,1 +1,1 @@
-export const CIHOST = 'http://10.177.68.27:8086/'
+export const CIHOST = 'http://10.177.68.5:8086/'

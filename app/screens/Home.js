@@ -279,11 +279,11 @@ export default function Home({navigation}) {
                 <TouchableOpacity key={index} onPress={()=>{
                   selectContest(contests[category.categoryName][index]); 
                   console.log('mycat',contests[category.categoryName][index])
-                  }} activeOpacity={0.9}>
+                  }} activeOpacity={0.9} style={{marginBottom: 10}}>
                   <Contest  imageUri={imageUrl} contestName={contestName} date={toDayMonthYear(new Date(startDateTime))} />  
                 </TouchableOpacity>  
+                
               )}
-            
           </HorizontalSlider>
         )}
         

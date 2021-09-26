@@ -31,17 +31,23 @@ const styles = StyleSheet.create({
     elevation: 5,
     overflow: 'hidden',
     marginHorizontal: 8,
-    marginVertical: 4
+    marginVertical: 4,
+    // borderWidth: 1,
+    // borderColor: '#00b6bd'
     
   },
   imageWrapper:{
     width: '100%',
     height: 130,
+    // borderBottomWidth: 1 ,
+    // borderBottomColor: '#00b6bd'
   },
   image:{
     flex: 1,
     width: undefined,
     height: undefined,
+    // overlayColor: '#00b6bd',
+    // opacity: 0.2
   },
   contestDetail:{
     flex: 1,
