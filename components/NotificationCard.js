@@ -23,5 +23,6 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderBottomColor: Theme.textSecondary,
     justifyContent: 'center',
+    minWidth:'100%'
   },
 });

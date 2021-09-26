@@ -5,7 +5,52 @@ import 'firebase/firestore'
 
 export default function App({navigation}) {
 
-    useEffect(()=>{
+  useEffect(()=> {
+    setQuestion(false)
+    
+      // (AsyncStorage.getItem('contestduration'))
+      // AsyncStorage.getItem('contestduration')
+      // .then(data=>{
+      //     console.log('time',typeof JSON.parse(data))
+      //     setMinutes(JSON.parse(data))
+      //     setSeconds(0)
+      // })
+      // const myemail = "sarfaraz@gmail.com"
+      // // http://localhost:
+      // // fetch(`${HOST}5000/contestQuestion/all/${categories_data[index].categoryName}/5/1`,{
+      // fetch(`${HOST}5000/contest/join/33383668-dbce-4c4e-bba2-73a1c465bda5?emailId=${myemail}`,{
+      //     method: 'POST',
+      //     headers:{
+      //       'Content-Type': 'application/json'
+      //     }
+      //   })
+      //   .then(res1=>console.log(res1))
+      //   .then(data1=>{
+      //      console.log('joinquiz',data1);
+
+      //      fetch(`${HOST}5000/contestQuestion/all/33383668-dbce-4c4e-bba2-73a1c465bda5`,{
+      //         method: 'GET',
+      //         headers:{
+      //           'Content-Type': 'application/json'
+      //         }
+      //       })
+      //       .then(res=>res.json())
+      //       .then(data=>{
+      //          console.log('staticquiz',data);
+      //          setStaticquestions(data)
+      //          setQuizlength(data.length)
+      //          setTimeout(() => 
+      //         { 
+      //            setQuestion(true)
+      //         }, 1000);
+
+      //         // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+      //       })
+      //       .catch(err=>console.log(err, 'static error'))
+      //     // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+      //   })
+      //   .catch(err=>console.log(err, 'join error'))
+
         setTimeout(() => 
       {
         navigation.navigate('Home')
