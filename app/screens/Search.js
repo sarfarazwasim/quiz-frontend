@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 // import firestore from '../../firebase/Firebase';
 import firebase from '../../firebase/Firebase';
@@ -71,7 +72,12 @@ export default function Search({navigation}) {
 
     // return ()=> userSubscriber();
   },[])
-
+  const selectContest = (mycontest)=>{
+    console.log('select contest func')
+    AsyncStorage.setItem('selectedContest',JSON.stringify(mycontest))
+    .catch(err=>console.log(err))
+    navigation.navigate('ContestDetails')
+  }
   return (
     <View style={styles.container}>
       {/* <Text onPress={()=>navigation.navigate('ContestDetails')}>click here</Text> */}
@@ -83,7 +89,10 @@ export default function Search({navigation}) {
       </View>
       <ScrollView contentContainerStyle={styles.searchResultWrapper}>
         {contests.map(({imageUrl, contestName, startDateTime}, index)=>
-          <TouchableOpacity key={index} onPress={()=>navigation.navigate('ContestDetails')} activeOpacity={0.9}>
+          <TouchableOpacity key={index} onPress={()=>{
+            selectContest(contests[index]); 
+            console.log('mycat',contests[index])
+            }} activeOpacity={0.9}>
             <Contest  imageUri={imageUrl} contestName={contestName} date={toDayMonthYear(new Date(startDateTime))} />  
           </TouchableOpacity>  
         )}

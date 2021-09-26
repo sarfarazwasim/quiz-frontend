@@ -52,7 +52,7 @@ export default function ContestDetails({navigation}) {
 
   const subscribe = async ()=>{
     console.log('hi')
-    myemail=await AsyncStorage.getItem('emailId')
+    const myemail=await AsyncStorage.getItem('emailId')
     console.log('hello', myemail)
     fetch(`${HOST}5000/subscription/${data.contestId}?emailId=${myemail}`,
     {
@@ -114,7 +114,7 @@ export default function ContestDetails({navigation}) {
               </Text>
             </View>
 
-
+            {data.contestType == 'STATIC'? 
             <View style={{marginTop: '3%'}}>
               <Text style={{fontSize:17}}>
                 Closes At : </Text>
@@ -122,7 +122,8 @@ export default function ContestDetails({navigation}) {
               {(new Date(data.endDateTime).toString()).substr(0,25)}
               </Text>
             </View>
-
+            : <View></View>  
+  }
             <View  style={{marginTop: '3%'}}>
               <Text style={{fontSize:17}}>
                 Duration: </Text>

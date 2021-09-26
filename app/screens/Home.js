@@ -240,7 +240,7 @@ export default function Home({navigation}) {
         })
         .then(res=>res.json())
         .then(data=>{
-          // console.log(data, 'buy');
+          console.log(data, 'buy');
           setContests(state=>({...state, [categories_data[index].categoryName]: data}))
         })
         .catch(err=>console.log(err, 'sad'))

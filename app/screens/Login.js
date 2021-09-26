@@ -32,7 +32,7 @@ const Auth = useAuth()
       .then(res=>res.json())
       .then(data=>{
          console.log('login',data);
-         if(data.role === 'Private')
+         if(data.role === 'Private' || data.role === 'Public')
          {
           //  navigation.navigate('Home')
           // alert('Login Successful')
