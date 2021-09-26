@@ -1,8 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import Leader from '../assets/leader.json'
 import { StyleSheet, Text, View,Image, TouchableOpacity, Button, Pressable, ImageBackground, TextInput, ScrollView } from 'react-native';
-export default function App() {
+export default function App({scoreBoard}) {
+
+  useEffect(()=>{
+    // console.log('Async contest')
+    // console.log(AsyncStorage.getItem('selectedContest'))
+    console.log('myscore', scoreBoard.scores[0])
+    // setData(AsyncStorage.getItem('selectedContest'))
+    // storeStringData('contestId', 'contest2')
+    // console.log('contest', mydata)
+  },[])
+
+
+
   let [isactive, setActive] = useState(false);
   let [currentquestion, setCurrent] = useState(0);
   let [starttime, setstarttime] = useState("Monday 8 PM");
@@ -136,8 +148,7 @@ export default function App() {
           </View>
           </View>
 
-
-          {Leader.map((items, index) => (
+          {scoreBoard.scores.map((items, index) => (
             
             <View style={styles.leader_table} key={index} >
             <View style={styles.rank_col}>
@@ -167,13 +178,13 @@ export default function App() {
 
             <View style={styles.name_col}>
               <Text style={{fontSize:20, textAlign:'center'}} >
-                {items.name}
+                {items.userId}
               </Text>
             </View>
 
             <View style={styles.points_col}>
               <Text style={{fontSize:20, textAlign:'center',paddingRight:0}} >
-              {items.points}⭐
+              {items.score}⭐
               </Text>
             </View>
           </View>

@@ -8,6 +8,7 @@ import GeneratingSocreBoard from '../../components/loadingpage'
 // import Questions from '../../assets/questionset.json'
 import Theme from '../../styles/Theme';
 import firebase from '../../firebase/Firebase';
+import { HOST } from '../../constants/hostConfig';
 import 'firebase/firestore'
 
 export default function Play({navigation}) {
@@ -52,7 +53,7 @@ export default function Play({navigation}) {
   const [quizover, setOver] = React.useState(false);
 
 
-  const answerbutton = (myanswer,qid) =>
+  const answerbutton = async (myanswer,qid) =>
   {
     setAnsweredisabled(true)
     // question.clicked=myanswer
@@ -87,8 +88,8 @@ export default function Play({navigation}) {
     }
 
 
-    const myemail=AsyncStorage.getItem('emailId')
-    const mycontest=AsyncStorage.getItem('contestId')
+    const myemail= await AsyncStorage.getItem('emailId')
+    const mycontest= await AsyncStorage.getItem('contestId')
     // fetch(`${HOST}5000/contestQuestion/all/f3057d8a-3939-4710-8ccd-da9c410d0d5f`,{
     fetch(`${HOST}4000/answer?emailId=${myemail}`,
     {
@@ -202,7 +203,7 @@ export default function Play({navigation}) {
             <GeneratingSocreBoard/>
           :
             scoreBoard ?
-           <LeaderBoard/>
+           <LeaderBoard scoreBoard={scoreBoard} />
             :
             <View style={styles.container}>
       <ImageBackground source={require('../../assets/images/quiz_back.jpg')}
