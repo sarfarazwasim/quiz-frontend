@@ -107,10 +107,20 @@ export default function Play({navigation}) {
       })
       .then(res=>res.json())
       .then(data=>{
-         console.log('staticquiz',data);
+         console.log('dynamicquiz',data);
         // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
       })
       .catch(err=>console.log(err, 'answer error'))
+  }
+
+  const setnull = () =>
+  {
+    setastyle4({})
+      setastyle2({})
+      setastyle3({})
+      setastyle1({})
+      setAnsweredisabled(false)
+
   }
 
   const quitbutton = () =>
@@ -140,6 +150,7 @@ export default function Play({navigation}) {
         console.log('question --->', snapshot.data())
         if(snapshot.data()){
           setQuestion(snapshot.data())
+          setnull()
           setScoreBoard(null)
           setWaiting(false)
         }
@@ -206,6 +217,7 @@ export default function Play({navigation}) {
            <LeaderBoard scoreBoard={scoreBoard} />
             :
             <View style={styles.container}>
+             
       <ImageBackground source={require('../../assets/images/quiz_back.jpg')}
       style={styles.back_image} />
       
@@ -234,7 +246,7 @@ export default function Play({navigation}) {
           <View style={{flex: 1, marginTop:"-20%",alignItems:'center',
           justifyContent:'center', marginBottom: '3%'}}>
             <View>
-                <Text style={{fontSize: 20}}>{minutes}:{zero}{seconds}</Text>
+                {/* <Text style={{fontSize: 20}}>{minutes}:{zero}{seconds}</Text> */}
             </View>
               <View style={{backgroundColor: 'linear-gradient(180deg, #00b6bd 0%, rgba(137, 202, 203, 0.97) 100%);',
                 padding: '1%', minWidth: '90%', maxWidth: '90%', borderRadius:20,

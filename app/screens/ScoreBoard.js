@@ -1,26 +1,37 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState,useEffect} from 'react';
-import Leader from '../assets/leader.json'
 import { StyleSheet, Text, View,Image, TouchableOpacity, Button, Pressable, ImageBackground, TextInput, ScrollView } from 'react-native';
-export default function App({scoreBoard}) {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HOST } from '../../constants/hostConfig';
+import 'firebase/firestore'
+export default function App({}) {
 
   useEffect(()=>{
-    // console.log('Async contest')
-    // console.log(AsyncStorage.getItem('selectedContest'))
-    console.log('myscore', scoreBoard.scores[0])
-    // setData(AsyncStorage.getItem('selectedContest'))
-    // storeStringData('contestId', 'contest2')
-    // console.log('contest', mydata)
+   
+
+       
+          AsyncStorage.getItem('contestId')
+      .then(cid=>{
+        fetch(`${HOST}6001/scoreboard/getscore/${cid}`,{
+            method: 'GET',
+            headers:{
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(res1=>res1.json())
+          .then(data1=>{
+             console.log('scoreboard',data1);
+             setScoreBoard(data1)
+            // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+          })
+          .catch(err=>console.log(err, 'scoreboard error'))
+      })
   },[])
 
 
 
   let [isactive, setActive] = useState(false);
-  let [currentquestion, setCurrent] = useState(0);
-  let [starttime, setstarttime] = useState("Monday 8 PM");
-  let [endtime, setendtime] = useState("Monday 10 PM");
-  let [duration, setDuration] = useState("15 Mins");
-  let [clickedanswer, setClicked] = useState(-1);
+  let [scoreBoard, setScoreBoard] = useState([]);
   let answerstyle = {backgroundColor:'gray', color:'white'};
 
   // let [timeleft, setleft] = useState(30);
@@ -32,10 +43,86 @@ export default function App({scoreBoard}) {
   //   setTimeleft (timeleft--);
   // }, 1000);
 
+  const subscribrbutton = () =>
+  {
+    
+  }
+
+  const joinbutton = () =>
+  {
+    
+  }
+
+  const prevbutton = () =>
+  {
+    // alert('my ' + clickedanswer + ' correct ' + Questions[currentquestion].correctIndex)
+    // Questions[currentquestion].isskipped=false
+
+    if(currentquestion <= Questions.length)
+    {
+      setCurrent(currentquestion-1)
+      // alert(currentquestion)
+    }
+    
+    if(Questions[currentquestion-1].clicked)
+    {
+      setAnswered(true)  
+      if(Questions[currentquestion-1].clicked === 1)
+        {
+          setastyle1(answerstyle)
+          setastyle2({})
+          setastyle3({})
+          setastyle4({})
+        }
+        else if(Questions[currentquestion-1].clicked === 2)
+        {
+          setastyle2(answerstyle)
+          setastyle1({})
+          setastyle3({})
+          setastyle4({})
+        }
+        else if(Questions[currentquestion-1].clicked === 3)
+        {
+          setastyle3(answerstyle)
+          setastyle2({})
+          setastyle1({})
+          setastyle4({})
+        }
+        else if(Questions[currentquestion-1].clicked === 4)
+        {
+          setastyle4(answerstyle)
+          setastyle2({})
+          setastyle3({})
+          setastyle1({})
+        }
+    }
+    else
+    {
+
+      setCorrect(-1)
+      setAnswered(false)
+      setastyle1({})
+      setastyle2({})
+      setastyle3({})
+      setastyle4({})
+    }
+  }
+
+  const submitbutton = () =>
+  {
+
+      alert('Score: '+ totalcorrect+' / '+totalquestions)
+    setCorrect(-1)
+    setAnswered(false)
+    setastyle1({})
+    setastyle2({})
+    setastyle3({})
+    setastyle4({})
 
 
-
-  
+  }
+  if(scoreBoard)
+  {
   return (
     <ScrollView>
 
@@ -44,7 +131,7 @@ export default function App({scoreBoard}) {
       {/* <ImageBackground source={require('./assets/quiz_back.jpg')}
                 style={styles.back_image} /> */}
       <View style={styles.middle_body}>
-        <View style={{borderColor: 'black', borderWidth: 1, borderRadius: 20}}>
+         <View style={{borderColor: 'black', borderWidth: 1, borderRadius: 20}}>
           
 
           <View style={styles.top_heading}>
@@ -73,7 +160,7 @@ export default function App({scoreBoard}) {
           </View>
           </View>
 
-          {scoreBoard.scores.map((items, index) => (
+          {scoreBoard.map((items, index) => (
             
             <View style={styles.leader_table} key={index} >
             <View style={styles.rank_col}>
@@ -117,14 +204,17 @@ export default function App({scoreBoard}) {
           ))}
           
           
-        {/* <View style={styles.inside_body}>
-        </View> */}
         </View>
       </View>
       {/* <View style={{padding: 20}}></View> */}
     </View>  
     </ScrollView>
   );
+    }
+    else
+    {
+        return(<View></View> )
+    }
 }
 
 const styles = StyleSheet.create({

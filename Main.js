@@ -20,6 +20,7 @@ import DynamicQuiz from './app/screens/Dynamicquiz'
 import Thankyoupage from './app/screens/Thankyoupage'
 import { AuthProvider, useAuth } from './context/authContext';
 import Notification from './app/screens/Notification';
+import Scoreboard from './app/screens/ScoreBoard'
 
 
 
@@ -71,6 +72,7 @@ export default function Main() {
                   <HomeStack.Screen name="Dynamicpage" component={DynamicQuiz} options={noNav}/>
                   <HomeStack.Screen name="Thankyoupage" component={Thankyoupage} options={noNav}/>
                   <HomeStack.Screen name="Notification" component={Notification} options={noNav}/>
+                  <HomeStack.Screen name="Scoreboard" component={Scoreboard} options={noNav}/>
                 </>
           }
           

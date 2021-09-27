@@ -14,6 +14,38 @@ export default function ContestDetails({navigation}) {
     AsyncStorage.getItem('selectedContest')
     .then(data=>{
       data=JSON.parse(data);
+      AsyncStorage.setItem('endtime', data.endDateTime)
+      AsyncStorage.setItem('starttime', data.startDateTime)
+      AsyncStorage.setItem('nowtime', (new Date()).getTime())
+      if((new Date(data.endDateTime)).getTime() < (new Date()).getTime())
+      {
+        setNotEnded(false)
+        setshowleader(true)
+        // setActive(false)
+      }
+
+      if((new Date(data.startDateTime)).getTime() > (new Date()).getTime())
+      {
+        setActive(false)
+        setshowleader(false)
+        setNotEnded(false)
+      }
+      console.log('data------->' , new Date(data.startDateTime))
+      if((new Date(data.startDateTime)).getTime() < (new Date()).getTime())
+      {
+        setActive(true)
+        setshowleader(false)
+        // setNotEnded(false)
+      }
+
+      if((new Date(data.startDateTime)).getTime() < (new Date()).getTime() && data.contestType == 'DYNAMIC')
+      {
+        setActive(true)
+        setshowleader(true)
+        setNotEnded(false)
+      }
+
+
       if(data.durationTime)
       {
       const myArr = (data.durationTime).split(":")
@@ -31,19 +63,40 @@ export default function ContestDetails({navigation}) {
     // console.log('contest', mydata)
   },[])
 
-  let [isactive, setActive] = useState(true);
+  let [isactive, setActive] = useState(null);
+  let [showleaderborad, setshowleader] = useState(null);
   let [quiztype, setstype] = useState("STATIC");
   let [data, setData] = useState(null);
   let [starttime, setstarttime] = useState("Monday 8 PM");
-  let [endtime, setendtime] = useState("Monday 10 PM");
+  let [isnotended, setNotEnded] = useState(null);
   let [duration, setDuration] = useState("15 Mins");
-  let [clickedanswer, setClicked] = useState(-1);
   let answerstyle = {backgroundColor:'gray', color:'white'};
 
-  const join = ()=>{
+  const join = async ()=>{
     const cid = 'contest2'
     console.log('Contest Id ', cid)
     // AsyncStorage.setItem('contestId', cid)
+    const myemail=await AsyncStorage.getItem('emailId')
+    console.log('hello', myemail)
+    fetch(`${HOST}5000/contest/join/${data.contestId}?emailId=${myemail}`,
+    {
+
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res=>{
+        console.log(res, 'hid')
+        return res
+      })
+      .then(data=>{
+         console.log('subscription',data);
+          // alert('subscribe')
+        // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+      })
+      .catch(err=>console.log(err, 'join error'))
+
     if(data.contestType === "DYNAMIC")
       navigation.navigate('Dynamicpage')
     else if(data.contestType === "STATIC")
@@ -73,6 +126,9 @@ export default function ContestDetails({navigation}) {
       })
       .catch(err=>console.log(err, 'subscription error'))
 
+  }
+  const callleader = ()=>{
+    navigation.navigate('Scoreboard')
   }
 
   if(data)
@@ -110,7 +166,7 @@ export default function ContestDetails({navigation}) {
               <Text style={{fontSize:17}}>
                 Starts At : </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
-              {(new Date(data.startDateTime).toString()).substr(0,25)}
+              {(new Date(data.startDateTime).toLocaleString()).substr(0,25)}
               </Text>
             </View>
 
@@ -119,7 +175,7 @@ export default function ContestDetails({navigation}) {
               <Text style={{fontSize:17}}>
                 Closes At : </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
-              {(new Date(data.endDateTime).toString()).substr(0,25)}
+              {(new Date(data.endDateTime).toLocaleString()).substr(0,25)}
               </Text>
             </View>
             : <View></View>  
@@ -129,6 +185,7 @@ export default function ContestDetails({navigation}) {
                 Duration: </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
               {data.durationTime} Mins
+              {/* {new Date().toLocaleString() === new Date(data.endDateTime).toLocaleString()} */}
               </Text>
             </View>
 
@@ -142,11 +199,23 @@ export default function ContestDetails({navigation}) {
               <Pressable style={styles.join_btn} onPress={()=>join()}>
               <Text style={{color:'white'}}>JOIN</Text>
           </Pressable>
-            ) : (
+            ) : (<Text></Text>)
+              }
+              {!isactive ? (
               <Pressable style={styles.join_btn_disabled} disabled>
+              <Text style={{color:'white'}}>QUIZ YET TO START</Text>
+          </Pressable>
+            ) : (<Text></Text>)
+              }
+              {showleaderborad? (
+              <Pressable style={styles.join_btn} onPress={()=>callleader()}>
+              <Text style={{color:'white'}}>LEADERBOARD</Text>
+          </Pressable>
+            ) : (<Text></Text>)
+              }
+              {/* <Pressable style={styles.join_btn_disabled} disabled>
                 <Text style={{color:'white'}}>QUIZ YET TO START</Text>
-            </Pressable>
-            )}
+            </Pressable> */}
             {/* <Button title="Join" >
             </Button> */}
             <View style={{marginTop: 40}}>

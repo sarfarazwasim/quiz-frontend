@@ -61,13 +61,16 @@ export default function Play({navigation}) {
         AsyncStorage.getItem('contestduration')
         .then(data=>{
             console.log('time',typeof JSON.parse(data))
-            setMinutes(JSON.parse(data))
+            setMinutes(10)
+
             setSeconds(0)
         })
-        const myemail = "sarfaraz@gmail.com"
-        // http://localhost:
-        // fetch(`${HOST}5000/contestQuestion/all/${categories_data[index].categoryName}/5/1`,{
-        fetch(`${HOST}5000/contest/join/33383668-dbce-4c4e-bba2-73a1c465bda5?emailId=${myemail}`,{
+
+        AsyncStorage.getItem('emailId')
+        .then(myemail=>{
+          AsyncStorage.getItem('contestId')
+      .then(cid=>{
+        fetch(`${HOST}5000/contest/join/${cid}?emailId=${myemail}`,{
             method: 'POST',
             headers:{
               'Content-Type': 'application/json'
@@ -77,7 +80,7 @@ export default function Play({navigation}) {
           .then(data1=>{
              console.log('joinquiz',data1);
 
-             fetch(`${HOST}5000/contestQuestion/all/33383668-dbce-4c4e-bba2-73a1c465bda5`,{
+             fetch(`${HOST}5000/contestQuestion/all/${cid}`,{
                 method: 'GET',
                 headers:{
                   'Content-Type': 'application/json'
@@ -99,6 +102,8 @@ export default function Play({navigation}) {
             // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
           })
           .catch(err=>console.log(err, 'join error'))
+      })
+    })
   },[])
 
   React.useEffect(() => {
@@ -164,8 +169,10 @@ export default function Play({navigation}) {
       setastyle3({})
       setastyle1({})
     }
-    const myemail="sarfaraz@gmail.com"
-    // fetch(`${HOST}5000/contestQuestion/all/f3057d8a-3939-4710-8ccd-da9c410d0d5f`,{
+    AsyncStorage.getItem('emailId')
+        .then(myemail=>{
+    AsyncStorage.getItem('contestId')
+      .then(cid=>{
     fetch(`${HOST}4000/answer?emailId=${myemail}`,
     {
 
@@ -175,18 +182,19 @@ export default function Play({navigation}) {
         },
         body: JSON.stringify({
             userId: "",
-            contestId: "33383668-dbce-4c4e-bba2-73a1c465bda5",
+            contestId: cid,
             questionId: qid,
             answer: JSON.stringify(myanswer)
         })
       })
       .then(res=>res.json())
       .then(data=>{
-         console.log('staticquiz',data);
+         console.log('staticquiz answer',data);
         // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
       })
       .catch(err=>console.log(err, 'answer error'))
-
+    })
+  })
 
     setCorrect(Questions[currentquestion].correctIndex)
     setAnswered(true)
@@ -336,24 +344,37 @@ export default function Play({navigation}) {
     setastyle3({})
     setastyle4({})
   }
-  const submitbutton = () =>
-  {
-
-    alert('Score: '+ totalcorrect+' / '+totalquestions)
-    setCorrect(-1)
-    setAnswered(false)
-    setastyle1({})
-    setastyle2({})
-    setastyle3({})
-    setastyle4({})
-
-
-  }
-  
   const quitbutton = () =>
   {
+    AsyncStorage.getItem('emailId')
+        .then(myemail=>{
+    AsyncStorage.getItem('contestId')
+      .then(cid=>{
+    fetch(`${HOST}5000/contest/endByPlayer/${cid}?emailId=${myemail}`,
+    {
+
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res=>res)
+      .then(data=>{
+         console.log('end staticquiz',data);
+        //  alert('end')
+         console.log('end')
+        // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+      })
+      .catch(err=>console.log(err, 'end error'))
+
+    
+
     navigation.navigate('Thankyoupage')
+      })
+    })
+
   }
+
 
   useEffect(()=>{
     let questionSubscriber=()=>{}

@@ -6,7 +6,7 @@ import 'firebase/firestore'
 export default function App({navigation}) {
 
   useEffect(()=> {
-    setQuestion(false)
+    // setQuestion(false)
     
       // (AsyncStorage.getItem('contestduration'))
       // AsyncStorage.getItem('contestduration')
