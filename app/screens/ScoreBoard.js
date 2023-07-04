@@ -3,6 +3,7 @@ import React, {useState,useEffect} from 'react';
 import { StyleSheet, Text, View,Image, TouchableOpacity, Button, Pressable, ImageBackground, TextInput, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HOST } from '../../constants/hostConfig';
+import Scores from '../../assets/leader.json'
 import 'firebase/firestore'
 export default function App({}) {
 
@@ -21,7 +22,7 @@ export default function App({}) {
           .then(res1=>res1.json())
           .then(data1=>{
              console.log('scoreboard',data1);
-             setScoreBoard(data1)
+            //  setScoreBoard(data1)
             // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
           })
           .catch(err=>console.log(err, 'scoreboard error'))
@@ -160,7 +161,7 @@ export default function App({}) {
           </View>
           </View>
 
-          {scoreBoard.map((items, index) => (
+          {Scores.map((items, index) => (
             
             <View style={styles.leader_table} key={index} >
             <View style={styles.rank_col}>

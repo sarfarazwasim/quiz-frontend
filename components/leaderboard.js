@@ -7,7 +7,7 @@ export default function App({scoreBoard}) {
   useEffect(()=>{
     // console.log('Async contest')
     // console.log(AsyncStorage.getItem('selectedContest'))
-    console.log('myscore', scoreBoard.scores[0])
+    // console.log('myscore', scoreBoard.scores[0])
     // setData(AsyncStorage.getItem('selectedContest'))
     // storeStringData('contestId', 'contest2')
     // console.log('contest', mydata)
@@ -73,7 +73,7 @@ export default function App({scoreBoard}) {
           </View>
           </View>
 
-          {scoreBoard.scores.map((items, index) => (
+          {Leader.map((items, index) => (
             
             <View style={styles.leader_table} key={index} >
             <View style={styles.rank_col}>
@@ -103,13 +103,15 @@ export default function App({scoreBoard}) {
 
             <View style={styles.name_col}>
               <Text style={{fontSize:20, textAlign:'center'}} >
-                {items.userId}
+                {/* {items.userId} */}
+                {items.name}
               </Text>
             </View>
 
             <View style={styles.points_col}>
               <Text style={{fontSize:20, textAlign:'center',paddingRight:0}} >
-              {items.score}⭐
+              {/* {items.score}⭐ */}
+              {items.points}⭐
               </Text>
             </View>
           </View>

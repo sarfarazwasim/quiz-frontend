@@ -11,12 +11,18 @@ export default function ContestDetails({navigation}) {
   useEffect(()=>{
     // console.log('Async contest')
     // console.log(AsyncStorage.getItem('selectedContest'))
-    AsyncStorage.getItem('selectedContest')
-    .then(data=>{
-      data=JSON.parse(data);
-      AsyncStorage.setItem('endtime', data.endDateTime)
-      AsyncStorage.setItem('starttime', data.startDateTime)
-      AsyncStorage.setItem('nowtime', (new Date()).getTime())
+    // AsyncStorage.getItem('selectedContest')
+    // .then(data=>
+      // {
+      // data=JSON.parse(data);
+      const data = {
+        endDateTime: new Date().getTime() + 300000000,
+        startDateTime: '2022-03-16',
+        contestType: 'STATIC'
+      }
+      // AsyncStorage.setItem('endtime', data.endDateTime)
+      // AsyncStorage.setItem('starttime', data.startDateTime)
+      // AsyncStorage.setItem('nowtime', (new Date()).getTime())
       if((new Date(data.endDateTime)).getTime() < (new Date()).getTime())
       {
         setNotEnded(false)
@@ -57,7 +63,7 @@ export default function ContestDetails({navigation}) {
       }
       setData(data)
       storeStringData('contestId', data.contestId)
-    })
+    // })
     // setData(AsyncStorage.getItem('selectedContest'))
     // storeStringData('contestId', 'contest2')
     // console.log('contest', mydata)
@@ -71,31 +77,32 @@ export default function ContestDetails({navigation}) {
   let [isnotended, setNotEnded] = useState(null);
   let [duration, setDuration] = useState("15 Mins");
   let answerstyle = {backgroundColor:'gray', color:'white'};
+  let imgurl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbDc5X3OjHsqcXLdXuFHSqj8_ZyeLmAVGBDg&usqp=CAU'
 
   const join = async ()=>{
-    const cid = 'contest2'
-    console.log('Contest Id ', cid)
-    // AsyncStorage.setItem('contestId', cid)
-    const myemail=await AsyncStorage.getItem('emailId')
-    console.log('hello', myemail)
-    fetch(`${HOST}5000/contest/join/${data.contestId}?emailId=${myemail}`,
-    {
+    // const cid = 'contest2'
+    // console.log('Contest Id ', cid)
+    // // AsyncStorage.setItem('contestId', cid)
+    // const myemail=await AsyncStorage.getItem('emailId')
+    // console.log('hello', myemail)
+    // fetch(`${HOST}5000/contest/join/${data.contestId}?emailId=${myemail}`,
+    // {
 
-        method: 'POST',
-        headers:{
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(res=>{
-        console.log(res, 'hid')
-        return res
-      })
-      .then(data=>{
-         console.log('subscription',data);
-          // alert('subscribe')
-        // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
-      })
-      .catch(err=>console.log(err, 'join error'))
+    //     method: 'POST',
+    //     headers:{
+    //       'Content-Type': 'application/json'
+    //     }
+    //   })
+    //   .then(res=>{
+    //     console.log(res, 'hid')
+    //     return res
+    //   })
+    //   .then(data=>{
+    //      console.log('subscription',data);
+    //       // alert('subscribe')
+    //     // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+    //   })
+    //   .catch(err=>console.log(err, 'join error'))
 
     if(data.contestType === "DYNAMIC")
       navigation.navigate('Dynamicpage')
@@ -137,7 +144,9 @@ export default function ContestDetails({navigation}) {
     <View style={styles.container}>
       <View style={styles.middle_body}>
         <View style={styles.inside_body}>
-        <ImageBackground source={require('../../assets/images/stack_image.png')}
+        {/* <ImageBackground source={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbDc5X3OjHsqcXLdXuFHSqj8_ZyeLmAVGBDg&usqp=CAU'} */}
+        <ImageBackground source={require('../../assets/images/quiz-cover1.png')}
+
                 style={styles.back_image} />
           <View style={{marginHorizontal: 20, minWidth: '75%'}}>
             <View>
@@ -148,7 +157,7 @@ export default function ContestDetails({navigation}) {
 
             <View style={{marginTop: '3%', textAlign:'right'}}>
               <Text style={{fontSize:17, textAlign:'right'}}>
-                By - Quizz Master </Text>
+                By - The Riddler </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
              
               </Text>
@@ -158,7 +167,8 @@ export default function ContestDetails({navigation}) {
               <Text style={{fontSize:17}}>
                 Quizz Type : </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
-              {data.contestType}
+              {/* {data.contestType} */}
+              NON LIVE
               </Text>
             </View>
 
@@ -166,7 +176,8 @@ export default function ContestDetails({navigation}) {
               <Text style={{fontSize:17}}>
                 Starts At : </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
-              {(new Date(data.startDateTime).toLocaleString()).substr(0,25)}
+              {/* {(new Date(data.startDateTime).toLocaleString()).substr(0,25)} */}
+              Today 6 PM
               </Text>
             </View>
 
@@ -175,7 +186,8 @@ export default function ContestDetails({navigation}) {
               <Text style={{fontSize:17}}>
                 Closes At : </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
-              {(new Date(data.endDateTime).toLocaleString()).substr(0,25)}
+              {/* {(new Date(data.endDateTime).toLocaleString()).substr(0,25)} */}
+              18 Mar 2022 at 12:00 PM
               </Text>
             </View>
             : <View></View>  
@@ -184,7 +196,8 @@ export default function ContestDetails({navigation}) {
               <Text style={{fontSize:17}}>
                 Duration: </Text>
               <Text style={{fontSize:18, fontWeight: 'bold'}}>
-              {data.durationTime} Mins
+              {/* {data.durationTime} Mins */}
+              10 Mins
               {/* {new Date().toLocaleString() === new Date(data.endDateTime).toLocaleString()} */}
               </Text>
             </View>

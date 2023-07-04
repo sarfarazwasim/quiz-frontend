@@ -5,7 +5,7 @@ import { ImageBackground, StyleSheet, Text, View,Image, TouchableOpacity } from 
 import QuizStartPage from '../../components/startingquizpage'
 import LeaderBoard from '../../components/leaderboard'
 import GeneratingSocreBoard from '../../components/loadingpage'
-// import Questions from '../../assets/questionset.json'
+import Questions from '../../assets/questionset.json'
 import Theme from '../../styles/Theme';
 import firebase from '../../firebase/Firebase';
 import { HOST } from '../../constants/hostConfig';
@@ -27,9 +27,9 @@ export default function Play({navigation}) {
   let [option2, setastyle2] = useState({});
   let [option3, setastyle3] = useState({});
   let [option4, setastyle4] = useState({});
-  let [totalcorrect, setTotal] = useState(0);
+  // let [totalcorrect, setTotal] = useState(0);
   let [skipcount, setSkipcount] = useState(0);
-  let [Questions, setStaticquestions] = useState([]);
+  // let [Questions, setStaticquestions] = useState([]);
   let [quizlength, setQuizlength] = useState(0);
 
 
@@ -58,52 +58,52 @@ export default function Play({navigation}) {
       setQuestion(false)
       
         // (AsyncStorage.getItem('contestduration'))
-        AsyncStorage.getItem('contestduration')
-        .then(data=>{
-            console.log('time',typeof JSON.parse(data))
+        // AsyncStorage.getItem('contestduration')
+        // .then(data=>{
+            // console.log('time',typeof JSON.parse(data))
             setMinutes(10)
 
             setSeconds(0)
-        })
+        // })
 
-        AsyncStorage.getItem('emailId')
-        .then(myemail=>{
-          AsyncStorage.getItem('contestId')
-      .then(cid=>{
-        fetch(`${HOST}5000/contest/join/${cid}?emailId=${myemail}`,{
-            method: 'POST',
-            headers:{
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(res1=>console.log(res1))
-          .then(data1=>{
-             console.log('joinquiz',data1);
+    //     AsyncStorage.getItem('emailId')
+    //     .then(myemail=>{
+    //       AsyncStorage.getItem('contestId')
+    //   .then(cid=>{
+    //     fetch(`${HOST}5000/contest/join/${cid}?emailId=${myemail}`,{
+    //         method: 'POST',
+    //         headers:{
+    //           'Content-Type': 'application/json'
+    //         }
+    //       })
+    //       .then(res1=>console.log(res1))
+    //       .then(data1=>{
+    //          console.log('joinquiz',data1);
 
-             fetch(`${HOST}5000/contestQuestion/all/${cid}`,{
-                method: 'GET',
-                headers:{
-                  'Content-Type': 'application/json'
-                }
-              })
-              .then(res=>res.json())
-              .then(data=>{
-                 console.log('staticquiz',data);
-                 setStaticquestions(data)
-                 setQuizlength(data.length)
-                 setTimeout(() => 
-                { 
-                   setQuestion(true)
-                }, 1000);
+    //          fetch(`${HOST}5000/contestQuestion/all/${cid}`,{
+    //             method: 'GET',
+    //             headers:{
+    //               'Content-Type': 'application/json'
+    //             }
+    //           })
+    //           .then(res=>res.json())
+    //           .then(data=>{
+    //              console.log('staticquiz',data);
+    //              setStaticquestions(data)
+    //              setQuizlength(data.length)
+    //              setTimeout(() => 
+    //             { 
+    //                setQuestion(true)
+    //             }, 1000);
 
-                // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
-              })
-              .catch(err=>console.log(err, 'static error'))
-            // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
-          })
-          .catch(err=>console.log(err, 'join error'))
-      })
-    })
+    //             // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+    //           })
+    //           .catch(err=>console.log(err, 'static error'))
+    //         // setContests(state=>({...state, [categories_data[index].categoryName]: data}))
+    //       })
+    //       .catch(err=>console.log(err, 'join error'))
+    //   })
+    // })
   },[])
 
   React.useEffect(() => {
@@ -207,13 +207,13 @@ export default function Play({navigation}) {
     if(clickedanswer===Questions[currentquestion].rightAnswer)
     {
     }
-    if(currentquestion < quizlength)
+    if(currentquestion < 10)
     {
       setCurrent(currentquestion+1)
 
     }
     
-    if(Questions[currentquestion+1].preAnswer)
+    if(Questions[currentquestion+1].preAnswer && false)
     {
         if(Questions[currentquestion+1].preAnswer === 1)
         {
@@ -376,76 +376,76 @@ export default function Play({navigation}) {
   }
 
 
-  useEffect(()=>{
-    let questionSubscriber=()=>{}
-    let contestStatusSubscriber=()=>{}
-    let scoreBoardSubscriber=()=>{}
+  // useEffect(()=>{
+  //   let questionSubscriber=()=>{}
+  //   let contestStatusSubscriber=()=>{}
+  //   let scoreBoardSubscriber=()=>{}
 
 
     
     
-    const getData = async ()=>{
-      let contestId = await AsyncStorage.getItem('contestId')
-      if(contestId==null)
-        navigation.navigate('Home')
+  //   const getData = async ()=>{
+  //     let contestId = await AsyncStorage.getItem('contestId')
+  //     if(contestId==null)
+  //       navigation.navigate('Home')
         
-      console.log(contestId)
+  //     console.log(contestId)
 
 
-      //TODO subscription code for firestore
+  //     //TODO subscription code for firestore
 
-      questionSubscriber = firebase.firestore()
-      .collection('question')
-      .doc(contestId)
-      .onSnapshot(snapshot=>{
+  //     questionSubscriber = firebase.firestore()
+  //     .collection('question')
+  //     .doc(contestId)
+  //     .onSnapshot(snapshot=>{
         
-        console.log('question --->', snapshot.data())
-        if(snapshot.data()){
-          setQuestion(snapshot.data())
-          setScoreBoard(null)
-          setWaiting(false)
-        }
-      })
+  //       console.log('question --->', snapshot.data())
+  //       if(snapshot.data()){
+  //         setQuestion(snapshot.data())
+  //         setScoreBoard(null)
+  //         setWaiting(false)
+  //       }
+  //     })
 
     
-      contestStatusSubscriber = firebase.firestore()
-      .collection('contest_status')
-      .doc(contestId)
-      .onSnapshot(snapshot=>{
-        console.log('contest status --->' , snapshot.data())
-        if(snapshot.data()){
-          setWaiting(snapshot.data().waiting)
+  //     contestStatusSubscriber = firebase.firestore()
+  //     .collection('contest_status')
+  //     .doc(contestId)
+  //     .onSnapshot(snapshot=>{
+  //       console.log('contest status --->' , snapshot.data())
+  //       if(snapshot.data()){
+  //         setWaiting(snapshot.data().waiting)
 
-          if(snapshot.data().ended)
-            setEnded(snapshot.data().ended)
-        }
+  //         if(snapshot.data().ended)
+  //           setEnded(snapshot.data().ended)
+  //       }
           
-      })
+  //     })
 
 
-      scoreBoardSubscriber = firebase.firestore()
-      .collection('score_board')
-      .doc(contestId)
-      .onSnapshot(snapshot=>{
+  //     scoreBoardSubscriber = firebase.firestore()
+  //     .collection('score_board')
+  //     .doc(contestId)
+  //     .onSnapshot(snapshot=>{
         
-        console.log('score board --->', snapshot.data())
-        if(snapshot.data()){
-          setScoreBoard(snapshot.data())
-          setWaiting(false)
-        }
-      })
+  //       console.log('score board --->', snapshot.data())
+  //       if(snapshot.data()){
+  //         setScoreBoard(snapshot.data())
+  //         setWaiting(false)
+  //       }
+  //     })
 
     
-    }
+  //   }
 
-    getData()
+  //   getData()
 
-    return ()=> {
-      questionSubscriber();
-      contestStatusSubscriber();
-      scoreBoardSubscriber();  
-    }
-  },[])
+  //   return ()=> {
+  //     questionSubscriber();
+  //     contestStatusSubscriber();
+  //     scoreBoardSubscriber();  
+  //   }
+  // },[])
 
 
   useEffect(()=>{
@@ -459,15 +459,24 @@ export default function Play({navigation}) {
   return (
     <View style={styles.container}>
       {
-        !waiting && !question && !scoreBoard ? 
-          <QuizStartPage/>
+        // !waiting && !question && !scoreBoard ? 
+        //   <QuizStartPage/>
+        // :
+        //   waiting ?
+        //     <GeneratingSocreBoard/>
+        //   :
+        //     scoreBoard ?
+        //    <LeaderBoard/>
+        //     :
+        true && true && !true ? 
+        <QuizStartPage/>
+      :
+        waiting ?
+          <GeneratingSocreBoard/>
         :
-          waiting ?
-            <GeneratingSocreBoard/>
+          scoreBoard ?
+         <LeaderBoard/>
           :
-            scoreBoard ?
-           <LeaderBoard/>
-            :
             <View style={styles.container}>
             <ImageBackground source={require('../../assets/images/quiz_back.jpg')}
             style={styles.back_image} />
@@ -477,7 +486,7 @@ export default function Play({navigation}) {
                       justifyContent:'space-between'}}>
                           <View>
                             <Text style={{fontSize: 17}}>
-                              Q {currentquestion+1}/{quizlength}</Text>
+                              Q {currentquestion+1}/10</Text>
                           </View>
                           <View style={{flex: 1, flexDirection: 'row', 
                       justifyContent: 'center',marginBottom:'-15%'}}>
@@ -597,7 +606,7 @@ export default function Play({navigation}) {
                           ):(
                             <View></View>
                           )}
-                          {currentquestion!=quizlength-1? (
+                          {currentquestion!=10-1? (
                             <View>
                               {isanswered? (
                           <TouchableOpacity  style={styles.button_next} onPress= {()=>{nextbutton()}}>

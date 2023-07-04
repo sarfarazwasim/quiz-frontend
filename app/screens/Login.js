@@ -17,6 +17,8 @@ const Auth = useAuth()
   const setToken = ()=>{
     console.log('Email: ', email,' pasword: ',password)
     // console.log('setting email id')
+          //  navigation.navigate('Home')
+          Auth.login(email)
 
     fetch(`${CIHOST}auth/loginWithError`,
     {
@@ -45,7 +47,8 @@ const Auth = useAuth()
         
       })
       .catch(err=>{console.log(err, 'login error')
-    alert('Invalid Credentials')})
+    // alert('Invalid Credentials')
+  })
 
   }
   return (

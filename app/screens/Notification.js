@@ -11,6 +11,38 @@ import { CINOTIFICATION } from '../../constants/ciNotificationConfig';
 export default function Notification() {
 
   const [datas, setData] = useState([])
+  const notification = [
+    {
+      message: 'Cricket Carnage 🏏 is Live. Play now'
+    },
+    {
+      message: '🎬 Results are out for `Bollywood Buzz`. Check your rank'
+    },
+    {
+      message: 'Here are the top 10 quizzes of the week'
+    },
+    {
+      message: '`Guess The Actor 👨🏻‍🎤` starts in an hour'
+    },
+    {
+      message: 'You have not completed `All about sports`. Finish the quiz before it ends'
+    },
+    {
+      message: 'Love Science 🔬? Play this Quiz and showcase your knowledge'
+    },
+    {
+      message: 'Long time no see 😢. You haven`t played a quiz since 2 days. Play now'
+    },
+    {
+      message: 'You were among the Top 3 🏆 when you last played this quiz. Play the new edition and grab the top spot'
+    },
+    {
+      message: 'Play this Superhero quiz 🦸'
+    },
+    {
+      message: 'Tap to see the trending quiz of the Day'
+    }
+  ]
 
   // http://10.177.68.11:8088/notification/get?emailId=tamil@gmail.com&appId=Instagram%27
 
@@ -59,7 +91,7 @@ const deleteNotification = (cid) =>
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Notification</Text>
-      {datas.map((item, index)=> 
+      {notification.map((item, index)=> 
       <View style={styles.mynotification}>
       <NotificationCard text={item.message} style={{minWidth:"100%"}}/>
       
@@ -101,6 +133,7 @@ const styles = StyleSheet.create({
     maxWidth:'10%',
     marginTop:20,
     marginLeft: -15,
+    fontWeight: 'bold'
     // borderWidth: 1,
     // borderColor: 'gray',
     // maxHeight:
